@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "primary-fixed": "#9cf2e8",
+        "outline": "#6e7977",
+        "tertiary": "#005f26",
+        "secondary": "#216963",
+        "surface-container-lowest": "#ffffff",
+        "on-primary-container": "#a3faef",
+        "on-surface": "#131b2e",
+        "on-error": "#ffffff",
+        "on-error-container": "#93000a",
+        "on-primary": "#ffffff",
+        "inverse-on-surface": "#eef0ff",
+        "on-primary-fixed-variant": "#00504a",
+        "error-container": "#ffdad6",
+        "on-background": "#131b2e",
+        "tertiary-fixed": "#7ffc97",
+        "primary-fixed-dim": "#80d5cb",
+        "inverse-primary": "#80d5cb",
+        "primary-container": "#0f766e",
+        "outline-variant": "#bdc9c6",
+        "on-tertiary": "#ffffff",
+        "on-secondary-fixed-variant": "#00504b",
+        "surface-container": "#eaedff",
+        "on-tertiary-fixed": "#002109",
+        "tertiary-fixed-dim": "#62df7d",
+        "background": "#faf8ff",
+        "surface-container-high": "#e2e7ff",
+        "surface-dim": "#d2d9f4",
+        "secondary-fixed-dim": "#8fd3cc",
+        "secondary-container": "#a8ece5",
+        "surface": "#faf8ff",
+        "tertiary-container": "#007a33",
+        "on-secondary": "#ffffff",
+        "inverse-surface": "#283044",
+        "surface-bright": "#faf8ff",
+        "on-secondary-fixed": "#00201e",
+        "on-tertiary-container": "#a1ffad",
+        "secondary-fixed": "#abefe8",
+        "surface-tint": "#006a63",
+        "on-surface-variant": "#3e4947",
+        "error": "#ba1a1a",
+        "on-primary-fixed": "#00201d",
+        "surface-container-highest": "#dae2fd",
+        "primary": "#005c55",
+        "surface-variant": "#dae2fd",
+        "surface-container-low": "#f2f3ff",
+        "on-tertiary-fixed-variant": "#005320",
+        "on-secondary-container": "#266d68"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "space-xl": "2rem",
+        "gutter": "1rem",
+        "margin": "1rem",
+        "space-xs": "0.375rem",
+        "space-lg": "1.5rem",
+        "space-sm": "0.75rem",
+        "space-md": "1rem"
+      },
+      "fontFamily": {
+        "body-xl": ["Noto Sans"],
+        "label-sm": ["Noto Sans"],
+        "headline-lg-mobile": ["Noto Sans"],
+        "headline-lg": ["Noto Sans"],
+        "body-md": ["Noto Sans"],
+        "label-lg": ["Noto Sans"],
+        "headline-md": ["Noto Sans"],
+        "label-md": ["Noto Sans"],
+        "headline-sm": ["Noto Sans"],
+        "body-lg": ["Noto Sans"]
+      },
+      "fontSize": {
+        "body-xl": ["20px", {"lineHeight": "30px", "fontWeight": "400"}],
+        "label-sm": ["15px", {"lineHeight": "20px", "fontWeight": "600"}],
+        "headline-lg-mobile": ["26px", {"lineHeight": "34px", "fontWeight": "700"}],
+        "headline-lg": ["30px", {"lineHeight": "38px", "fontWeight": "700"}],
+        "body-md": ["18px", {"lineHeight": "26px", "fontWeight": "500"}],
+        "label-lg": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+        "label-md": ["16px", {"lineHeight": "22px", "fontWeight": "600"}],
+        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+      }
+    }
+  }
+}</script></head><body class="bg-surface font-body-lg text-body-lg text-on-surface"><aside class="fixed left-0 top-0 h-full w-[260px] bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between py-space-lg px-gutter"><div class="flex flex-col gap-space-lg"><div class="flex items-center gap-space-sm px-space-xs"><div class="w-12 h-12 rounded-xl bg-primary-container flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[28px]">verified_user</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight leading-none">MedGuard</span><span class="font-label-sm text-label-sm text-on-surface-variant font-medium mt-1 leading-tight">Caregiver Suite</span></div></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-bold rounded-xl"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="home" href="#"><span class="material-symbols-outlined">home</span><span>Home</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="patients" href="#"><span class="material-symbols-outlined">family_restroom</span><span>Patients</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="scan-medicine-strips" href="#"><span class="material-symbols-outlined">document_scanner</span><span>Scan Strips</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm transition-all bg-primary-container text-on-primary-container font-bold rounded-xl" data-path="schedule-and-reminders" href="#"><span class="material-symbols-outlined">calendar_month</span><span>Schedule</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="caregiver-settings" href="#"><span class="material-symbols-outlined">settings</span><span>Settings</span></a></nav></div><div class="flex flex-col gap-space-sm"><div class="flex items-center gap-space-sm p-space-sm bg-surface-container-low rounded-xl"><div class="w-3 h-3 rounded-full bg-tertiary-container animate-pulse"></div><div class="flex flex-col"><span class="font-label-sm text-label-sm font-bold text-on-surface">AI Engine Ready</span><span class="font-label-sm text-label-sm text-on-surface-variant text-[13px]">On-device Indian Rx</span></div></div><div class="flex items-center gap-space-sm p-space-sm bg-secondary-container rounded-xl text-on-secondary-container"><span class="material-symbols-outlined text-[24px]">support_agent</span><div class="flex flex-col"><span class="font-label-sm text-label-sm font-bold leading-tight">Elder Helpline</span><span class="font-label-lg text-label-lg font-bold tracking-wide leading-none mt-1">14567</span></div></div></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-[70px] bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md flex-1 max-w-[420px]"><div class="relative w-full"><span class="material-symbols-outlined absolute left-space-md top-1/2 -translate-y-1/2 text-outline text-[22px]">search</span><input class="w-full h-11 pl-11 pr-space-md rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary transition-all" placeholder="Search elder names or medicines..." type="text"/></div></div><div class="flex items-center gap-space-md"><button class="flex items-center gap-space-xs px-space-md h-11 rounded-xl bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" type="button"><span class="material-symbols-outlined text-[20px]">language</span><span class="font-label-md text-label-md">English / हिन्दी</span></button><button class="flex items-center justify-center w-11 h-11 rounded-xl bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-lg text-label-lg transition-all" title="Enlarge Text Size" type="button">A+</button><button class="flex items-center gap-space-xs px-space-md h-11 rounded-xl bg-error text-on-error font-label-md text-label-md shadow-sm hover:opacity-95 transition-opacity" type="button"><span class="material-symbols-outlined text-[20px]">emergency</span><span>SOS 108/112</span></button><div class="flex items-center gap-space-sm pl-space-sm"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="hidden xl:flex flex-col text-left leading-tight"><span class="font-label-md text-label-md text-on-surface font-bold">Sunita Sharma</span><span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Primary Caregiver</span></div></div></div></header><main class="w-full pt-[70px] bg-surface"><div class="max-w-[1200px] mx-auto p-space-xl"><div class="flex flex-col w-full">
+<div class="flex flex-col gap-space-lg mb-space-lg">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="px-space-sm py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm uppercase tracking-wider">Adherence Console</span>
+<span class="font-body-md text-body-md text-on-surface-variant">• Today: Thu, 24 Oct</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">Daily Schedule &amp; Dosage Reminders</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl">Manage daily medication timing, adherence tracking, and voice reminder alarms for Ramesh Sharma (74 yrs).</p>
+</div>
+<div class="flex items-center p-1.5 bg-surface-container rounded-2xl shadow-sm self-start lg:self-center">
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-lowest text-primary font-label-md text-label-md shadow-sm transition-all" id="patientRamesh">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">person</span>
+<span>Ramesh Sharma (74)</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded-xl text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" id="patientKamala">
+<span class="material-symbols-outlined text-[20px]">person_outline</span>
+<span>Kamala Sharma (69)</span>
+</button>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest p-space-md rounded-2xl shadow-sm">
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="h-12 px-space-lg rounded-xl bg-primary-container text-on-primary font-label-lg text-label-lg shadow-sm hover:opacity-95 active:scale-[0.98] transition-all flex items-center gap-space-xs" type="button">
+<span class="material-symbols-outlined text-[22px]">add_circle</span>
+<span>+ Add Dose / Medication</span>
+</button>
+<button class="h-12 px-space-md rounded-xl bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-all flex items-center gap-space-xs shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">picture_as_pdf</span>
+<span>Export Adherence Log (PDF)</span>
+</button>
+</div>
+<div class="flex items-center gap-space-sm px-space-md py-2.5 rounded-xl bg-secondary-container/40 text-on-secondary-container">
+<span class="material-symbols-outlined text-[22px] text-primary">campaign</span>
+<div class="flex flex-col text-left">
+<span class="font-label-sm text-label-sm font-bold leading-tight">Caregiver Voice Alert</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Hindi Speech Enabled 🔊</span>
+</div>
+<div class="w-2.5 h-2.5 rounded-full bg-tertiary ml-space-xs animate-ping"></div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-lg">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">calendar_today</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Medication Regimen</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">4 scheduled sessions • Thursday, 24 October 2024</p>
+</div>
+</div>
+<span class="px-space-md py-1 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface font-semibold">Today: 3/5 Taken</span>
+</div>
+<div class="flex flex-col gap-space-md">
+<div class="bg-surface-container-low/70 p-space-md rounded-2xl flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[24px]">wb_twilight</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Morning (7:00 AM)</span>
+<span class="px-2.5 py-0.5 rounded-md bg-surface-container font-label-sm text-label-sm text-on-surface-variant">Empty Stomach</span>
+</div>
+<span class="flex items-center gap-1 font-label-md text-label-md text-tertiary font-bold">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                Taken at 7:15 AM
+              </span>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed-dim/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[26px]">medication</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface leading-tight">Pan-D</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Pantoprazole (40mg) + Domperidone (30mg) • 1 Capsule</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary bg-tertiary-fixed/30 px-3 py-1 rounded-full font-bold">Logged Automatically</span>
+</div>
+</div>
+<div class="bg-surface-container-low/70 p-space-md rounded-2xl flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[24px]">wb_sunny</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Breakfast (8:30 AM)</span>
+<span class="px-2.5 py-0.5 rounded-md bg-surface-container font-label-sm text-label-sm text-on-surface-variant">With Morning Meal</span>
+</div>
+<span class="flex items-center gap-1 font-label-md text-label-md text-tertiary font-bold">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                All Taken at 8:45 AM
+              </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+<div class="bg-surface-container-lowest p-space-md rounded-xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Glycomet GP 1</span>
+<span class="material-symbols-outlined text-tertiary text-[20px]" style="font-variation-settings: 'FILL' 1;">done</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Metformin 500mg + Glimepiride 1mg</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">1 Tablet with first bite of meal</span>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Telmikind 40</span>
+<span class="material-symbols-outlined text-tertiary text-[20px]" style="font-variation-settings: 'FILL' 1;">done</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Telmisartan 40mg</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">1 Tablet daily for BP management</span>
+</div>
+</div>
+</div>
+<div class="bg-secondary-container/20 p-space-md rounded-2xl flex flex-col gap-space-md shadow-sm">
+<div class="flex flex-wrap items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[26px]">wb_sunny</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">Afternoon (1:30 PM)</span>
+<span class="px-2.5 py-0.5 rounded-md bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold">Post Lunch</span>
+</div>
+<span class="px-space-md py-1 rounded-full bg-error-container text-on-error-container font-label-md text-label-md font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">alarm</span>
+                UPCOMING IN 45 MINS
+              </span>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md">
+<div class="w-14 h-14 rounded-2xl bg-secondary-container flex items-center justify-center text-on-secondary-container shrink-0">
+<span class="material-symbols-outlined text-[32px]">pill</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Ecosprin 75mg</h3>
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface-variant">1 Tablet</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-medium">Aspirin Gastro-resistant 75mg</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-primary">info</span>
+                    Take immediately after food with plenty of water. Do not take empty stomach.
+                  </p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-center shrink-0">
+<button class="h-12 px-space-md rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-all flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+<span>Skip Dose</span>
+</button>
+<button class="h-12 px-space-lg rounded-xl bg-primary-container text-on-primary font-label-lg text-label-lg shadow-sm hover:opacity-95 active:scale-[0.98] transition-all flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[22px]">check</span>
+<span>Mark as Taken</span>
+</button>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low/70 p-space-md rounded-2xl flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[24px]">bedtime</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Night (9:00 PM)</span>
+<span class="px-2.5 py-0.5 rounded-md bg-surface-container font-label-sm text-label-sm text-on-surface-variant">Post Dinner</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant font-medium">Scheduled for tonight</span>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[26px]">medication_liquid</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface leading-tight">Shelcal 500</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Calcium 500mg + Vitamin D3 (250 IU) • 1 Tablet with warm milk</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">Pending</span>
+</div>
+</div>
+</div>
+<div class="pt-space-sm flex justify-center">
+<button class="w-full py-3 rounded-xl bg-surface-container-low text-primary font-label-md text-label-md hover:bg-surface-container transition-all flex items-center justify-center gap-space-xs" type="button">
+<span class="material-symbols-outlined text-[20px]">medical_services</span>
+<span>+ Log Unscheduled SOS Dose (e.g. Sorbitrate, Pain Relief)</span>
+</button>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Weekly Adherence</h2>
+<span class="text-tertiary font-headline-md text-headline-md font-bold">92%</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Average weekly consistency across all 6 prescribed daily units.</p>
+<div class="flex items-center gap-space-md bg-surface-container-low p-space-md rounded-xl">
+<div class="relative w-20 h-20 shrink-0">
+<svg class="w-20 h-20 -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container-highest" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="92, 100" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">92%</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm font-bold text-on-surface">High Compliance Zone</span>
+<span class="font-label-sm text-label-sm text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+              +4% improvement vs last week
+            </span>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-2 pt-2">
+<div class="flex flex-col items-center p-2 rounded-xl bg-surface-container-low">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Mon</span>
+<span class="font-label-md text-label-md font-bold text-tertiary mt-1">6/6</span>
+<span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>
+</div>
+<div class="flex flex-col items-center p-2 rounded-xl bg-surface-container-low">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Tue</span>
+<span class="font-label-md text-label-md font-bold text-tertiary mt-1">6/6</span>
+<span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>
+</div>
+<div class="flex flex-col items-center p-2 rounded-xl bg-error-container/40">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Wed</span>
+<span class="font-label-md text-label-md font-bold text-error mt-1">5/6</span>
+<span class="material-symbols-outlined text-error text-[18px]">warning</span>
+</div>
+<div class="flex flex-col items-center p-2 rounded-xl bg-secondary-container/40">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Thu</span>
+<span class="font-label-md text-label-md font-bold text-primary mt-1">4/6</span>
+<span class="material-symbols-outlined text-primary text-[18px]">pending</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-xl bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[24px]">record_voice_over</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Voice Reminder Setup</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Indian regional voice prompt</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-bold text-primary">ARMED FOR 1:30 PM (LUNCH)</span>
+<span class="material-symbols-outlined text-[20px] text-tertiary">volume_up</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface font-semibold italic">"दोपहर की दवाई का समय हो गया है - ईकोस्प्रिन पानी के साथ लें"</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Device speaker volume: 85% • Repeats after 10m if unacknowledged</span>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex flex-col max-w-[240px]">
+<span class="font-label-md text-label-md font-bold text-on-surface">WhatsApp Family Notify</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-[14px]">Send confirmation ping to Sunita (+91 98201 XXXXX)</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-xl bg-tertiary-fixed/30 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[24px]">share</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Family Doctor Sync</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Dr. V. K. Iyer (Cardiologist)</p>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Keep medical practitioners in loop before upcoming consultation on 28 Oct.</p>
+<div class="flex flex-col gap-space-xs">
+<button class="w-full h-12 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:opacity-95 transition-all flex items-center justify-center gap-2 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">send</span>
+<span>1-Click WhatsApp Share</span>
+</button>
+<button class="w-full h-11 rounded-xl bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-all flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Download 30-Day PDF Summary</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btnRamesh = document.getElementById('patientRamesh');
+    const btnKamala = document.getElementById('patientKamala');
+
+    if (btnRamesh && btnKamala) {
+      btnRamesh.addEventListener('click', () => {
+        btnRamesh.className = "flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-lowest text-primary font-label-md text-label-md shadow-sm transition-all";
+        btnKamala.className = "flex items-center gap-space-xs px-space-md py-space-xs rounded-xl text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all";
+      });
+
+      btnKamala.addEventListener('click', () => {
+        btnKamala.className = "flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-lowest text-primary font-label-md text-label-md shadow-sm transition-all";
+        btnRamesh.className = "flex items-center gap-space-xs px-space-md py-space-xs rounded-xl text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all";
+      });
+    }
+  });
+</script></div></main></div></body></html>

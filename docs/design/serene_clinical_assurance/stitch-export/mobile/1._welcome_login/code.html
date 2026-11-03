@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_blank" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24..48,400..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "on-primary": "#ffffff", "tertiary-container": "#007a33", "primary-fixed-dim": "#80d5cb", "outline": "#6e7977", "error-container": "#ffdad6", "on-surface": "#131b2e", "on-error": "#ffffff", "secondary-fixed-dim": "#8fd3cc", "on-error-container": "#93000a", "primary": "#005c55", "on-tertiary-container": "#a1ffad", "on-secondary-fixed": "#00201e", "tertiary-fixed": "#7ffc97", "tertiary-fixed-dim": "#62df7d", "outline-variant": "#bdc9c6", "error": "#ba1a1a", "on-secondary": "#ffffff", "surface-container": "#eaedff", "secondary-fixed": "#abefe8", "surface-dim": "#d2d9f4", "secondary-container": "#a8ece5", "on-tertiary-fixed": "#002109", "on-primary-fixed": "#00201d", "surface-container-low": "#f2f3ff", "on-background": "#131b2e", "inverse-primary": "#80d5cb", "surface-variant": "#dae2fd", "on-surface-variant": "#3e4947", "surface": "#faf8ff", "primary-fixed": "#9cf2e8", "on-primary-container": "#a3faef", "surface-tint": "#006a63", "inverse-surface": "#283044", "background": "#faf8ff", "inverse-on-surface": "#eef0ff", "on-tertiary-fixed-variant": "#005320", "surface-container-highest": "#dae2fd", "tertiary": "#005f26", "surface-bright": "#faf8ff", "surface-container-lowest": "#ffffff", "on-secondary-container": "#266d68", "surface-container-high": "#e2e7ff", "primary-container": "#0f766e", "on-primary-fixed-variant": "#00504a", "secondary": "#216963", "on-secondary-fixed-variant": "#00504b", "on-tertiary": "#ffffff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "gutter": "1rem", "space-xs": "0.375rem", "margin": "1rem", "space-sm": "0.75rem", "space-xl": "2rem", "space-md": "1rem", "space-lg": "1.5rem" }, fontFamily: { "body-md": ["Noto Sans"], "label-lg": ["Noto Sans"], "body-xl": ["Noto Sans"], "headline-lg-mobile": ["Noto Sans"], "headline-md": ["Noto Sans"], "body-lg": ["Noto Sans"], "label-sm": ["Noto Sans"], "label-md": ["Noto Sans"], "headline-lg": ["Noto Sans"], "headline-sm": ["Noto Sans"] }, fontSize: { "body-md": ["18px", { "lineHeight": "26px", "fontWeight": "500" }], "label-lg": ["18px", { "lineHeight": "24px", "fontWeight": "700" }], "body-xl": ["20px", { "lineHeight": "30px", "fontWeight": "400" }], "headline-lg-mobile": ["26px", { "lineHeight": "34px", "fontWeight": "700" }], "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }], "label-sm": ["15px", { "lineHeight": "20px", "fontWeight": "600" }], "label-md": ["16px", { "lineHeight": "22px", "fontWeight": "600" }], "headline-lg": ["30px", { "lineHeight": "38px", "fontWeight": "700" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface pt-safe pb-safe flex flex-col min-h-screen"><main class="flex flex-col relative w-full bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Top Utility Bar: Quick Accessibility & Language Mode -->
+<header class="w-full px-margin py-space-sm flex items-center justify-between bg-surface-container-lowest shadow-sm rounded-b-xl z-10">
+<div class="flex items-center space-x-space-xs">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[24px]">verified_user</span>
+</div>
+<div>
+<span class="font-headline-sm text-headline-sm text-primary tracking-tight block">MedGuard</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant -mt-1 block">India Caregiver Edition</span>
+</div>
+</div>
+<!-- A / A+ Font Size Toggle -->
+<div aria-label="Text Size Toggle" class="flex items-center bg-surface-container p-1 rounded-full shadow-inner" id="text-size-toggle" role="group">
+<button aria-pressed="true" class="px-3 py-1.5 rounded-full font-label-sm text-label-sm bg-primary text-on-primary shadow-sm transition-all focus:outline-none" id="btn-text-regular" type="button">
+        A
+      </button>
+<button aria-pressed="false" class="px-3 py-1.5 rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-all focus:outline-none" id="btn-text-large" type="button">
+        A+
+      </button>
+</div>
+</header>
+<!-- Main Scrollable Intake Body -->
+<div class="w-full px-margin py-space-md flex flex-col space-y-space-md">
+<!-- Warm Empathic Visual Header -->
+<div class="relative w-full rounded-xl overflow-hidden bg-surface-container-high shadow-md">
+<div class="w-full h-44 bg-cover bg-center" data-alt="Warm and respectful candid portrait of a 55-year-old caring Indian daughter gently handing fresh water and medicine to her 78-year-old smiling father in an airy, sunlit living room in Bengaluru, decorated with traditional brass diya accents and warm teal curtains, empathetic documentary photography, soft daylight." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCTAM28uPtqkEnEYLBu9b9jNwh0XuRgvYljz7k2ZM7B7nlbYC9E-mZA3RJYbLLv-KHI_xXhRhR4PnJhXlujL8qlwq_1qB0J7-pt7XUBmm2rZnw-LCZIqof-aZro5TVjPuzE6GudE1yJO5oz9KOklTWgjdOx9qfxQNj0rPWJOHXmDnMTIdDfcXX6r4dD0RiIb1dkZGse-DcFtgMSHjJoXRTNQ8O4rHnoHJ2RFW_mTTo')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/90 via-inverse-surface/40 to-transparent flex flex-col justify-end p-space-md text-inverse-on-surface">
+<div class="flex items-center space-x-space-xs mb-1">
+<span class="material-symbols-outlined text-tertiary-fixed text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="font-label-sm text-label-sm text-tertiary-fixed font-semibold">Caring with Confidence</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-inverse-on-surface">Welcome to MedGuard</h1>
+<p class="font-body-md text-body-md text-inverse-on-surface/90 mt-0.5">बुजुर्गों की दवा सुरक्षा, आसान और भरोसेमंद</p>
+</div>
+</div>
+<!-- Explicit Indian Language Selector Pills (Elder-Friendly 48px+ targets) -->
+<div class="w-full bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center space-x-space-xs">
+<span class="material-symbols-outlined text-primary text-[24px]">translate</span>
+<span class="font-label-md text-label-md text-on-surface">Choose Language / भाषा चुनें</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">4 Languages</span>
+</div>
+<div class="grid grid-cols-2 gap-space-xs" id="lang-selector-group">
+<button class="lang-btn h-12 px-space-sm rounded-lg bg-primary text-on-primary font-label-md text-label-md flex items-center justify-between transition-colors shadow-sm focus:outline-none" data-lang="en" type="button">
+<span>English</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+<button class="lang-btn h-12 px-space-sm rounded-lg bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-between hover:bg-surface-variant transition-colors focus:outline-none" data-lang="hi" type="button">
+<span>हिन्दी (Hindi)</span>
+<span class="material-symbols-outlined text-[20px] text-outline-variant">radio_button_unchecked</span>
+</button>
+<button class="lang-btn h-12 px-space-sm rounded-lg bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-between hover:bg-surface-variant transition-colors focus:outline-none" data-lang="kn" type="button">
+<span>ಕನ್ನಡ (Kannada)</span>
+<span class="material-symbols-outlined text-[20px] text-outline-variant">radio_button_unchecked</span>
+</button>
+<button class="lang-btn h-12 px-space-sm rounded-lg bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-between hover:bg-surface-variant transition-colors focus:outline-none" data-lang="ta" type="button">
+<span>தமிழ் (Tamil)</span>
+<span class="material-symbols-outlined text-[20px] text-outline-variant">radio_button_unchecked</span>
+</button>
+</div>
+</div>
+<!-- Strict Privacy Promise Card (High-Trust Local Shield) -->
+<div class="w-full bg-secondary-container/30 p-space-md rounded-xl flex items-start space-x-space-sm shadow-sm">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex-shrink-0 flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">shield_lock</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center space-x-1">
+<h2 class="font-headline-sm text-headline-sm text-primary">100% Private on this Phone</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+          Your photos &amp; medical prescriptions stay right on your device. We never sell or share your family's private health records.
+        </p>
+<div class="mt-2 flex items-center space-x-1 text-primary">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+<span class="font-label-sm text-label-sm">Doctor-Patient Confidentiality Guaranteed</span>
+</div>
+</div>
+</div>
+<!-- Mobile Login / OTP Flow Module -->
+<div class="w-full bg-surface-container-lowest p-space-md rounded-xl shadow-md flex flex-col space-y-space-md">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Caregiver Fast Sign-in</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+          Enter mobile number to view elder prescriptions, timings, and interaction alerts.
+        </p>
+</div>
+<!-- Phone Number Input Group -->
+<div class="flex flex-col space-y-space-xs">
+<label class="font-label-md text-label-md text-on-surface flex items-center space-x-1" for="caregiver-phone">
+<span>Mobile Number (मोबाइल नंबर)</span>
+<span class="text-error font-bold">*</span>
+</label>
+<div class="flex items-stretch rounded-xl bg-surface-container-low focus-within:bg-surface-container-lowest focus-within:shadow-md transition-all">
+<!-- India Prefix Pill -->
+<div class="flex items-center justify-center px-4 bg-surface-variant rounded-l-xl text-on-surface-variant space-x-1.5 select-none">
+<span class="text-[20px]">🇮🇳</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">+91</span>
+</div>
+<input aria-describedby="phone-hint" class="flex-1 min-w-0 bg-transparent px-space-md py-3 text-on-surface font-headline-sm text-headline-sm placeholder:text-outline focus:outline-none" id="caregiver-phone" inputmode="numeric" maxlength="10" name="phone" pattern="[0-9]{10}" placeholder="98765 43210" type="tel"/>
+<button aria-label="Clear phone field" class="hidden px-space-sm text-outline hover:text-on-surface focus:outline-none flex items-center justify-center" id="clear-phone-btn" type="button">
+<span class="material-symbols-outlined text-[24px]">cancel</span>
+</button>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant" id="phone-hint">We will send a 4-digit verification SMS code.</p>
+</div>
+<!-- Primary Action: Get OTP Button -->
+<button class="w-full min-h-[52px] bg-primary text-on-primary rounded-xl font-label-lg text-label-lg flex items-center justify-center space-x-space-xs shadow-md hover:bg-primary-container active:scale-[0.99] transition-all focus:outline-none" id="btn-get-otp" type="button">
+<span>Get OTP (ओटीपी प्राप्त करें)</span>
+<span class="material-symbols-outlined text-[24px]">arrow_forward</span>
+</button>
+<!-- Divider Ornament -->
+<div class="flex items-center space-x-3 py-1">
+<div class="flex-1 h-px bg-surface-variant"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">or</span>
+<div class="flex-1 h-px bg-surface-variant"></div>
+</div>
+<!-- Guest Access / Instant Scan Button -->
+<button class="w-full min-h-[52px] bg-surface-container text-primary rounded-xl font-label-lg text-label-lg flex items-center justify-center space-x-space-xs hover:bg-secondary-container hover:text-on-secondary-container transition-all focus:outline-none" id="btn-guest-caregiver" type="button">
+<span class="material-symbols-outlined text-[22px]">directions_walk</span>
+<span>Continue as Guest Caregiver (No login needed)</span>
+</button>
+<p class="font-label-sm text-label-sm text-center text-on-surface-variant">
+        Safe instant access for emergency scanning &amp; drug checks.
+      </p>
+</div>
+<!-- Safety & Senior Helpline Assistance Card -->
+<div class="w-full bg-surface-container-high rounded-xl p-space-md shadow-sm flex flex-col space-y-space-sm">
+<div class="flex items-center space-x-space-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container flex-shrink-0">
+<span class="material-symbols-outlined text-[24px]">support_agent</span>
+</div>
+<div class="flex-1">
+<span class="font-label-lg text-label-lg text-on-surface block">Need help using this app?</span>
+<span class="font-body-md text-body-md text-on-surface-variant block">Speak to a certified elder care assistant in your language.</span>
+</div>
+</div>
+<a class="w-full min-h-[48px] px-space-md py-2.5 bg-surface-container-lowest rounded-lg flex items-center justify-between text-on-surface hover:bg-surface-variant transition-colors shadow-sm" href="tel:14567">
+<div class="flex items-center space-x-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[24px]">call</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">Elder Helpline 14567</span>
+</div>
+<span class="font-label-sm text-label-sm bg-tertiary-container/20 text-tertiary px-2.5 py-1 rounded-full font-bold">24x7 Free</span>
+</a>
+</div>
+<!-- Humanist Reassurance Footnote -->
+<footer class="w-full py-space-sm text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant">
+        MedGuard follows National Digital Health Mission (ABDM) security best practices.
+      </p>
+<div class="flex justify-center items-center space-x-4 mt-2">
+<span class="font-label-sm text-label-sm text-primary underline cursor-pointer">Terms of Care</span>
+<span class="text-outline-variant">•</span>
+<span class="font-label-sm text-label-sm text-primary underline cursor-pointer">Data Privacy</span>
+<span class="text-outline-variant">•</span>
+<span class="font-label-sm text-label-sm text-primary underline cursor-pointer">Emergency Guide</span>
+</div>
+</footer>
+</div>
+</div>
+<script>
+  // Micro-interaction handlers for Large Text accessibility and Language buttons
+  (function() {
+    const textRegular = document.getElementById('btn-text-regular');
+    const textLarge = document.getElementById('btn-text-large');
+    const phoneInput = document.getElementById('caregiver-phone');
+    const clearBtn = document.getElementById('clear-phone-btn');
+    const langButtons = document.querySelectorAll('.lang-btn');
+    const otpBtn = document.getElementById('btn-get-otp');
+
+    // Font Size Toggle Micro-state
+    if (textRegular && textLarge) {
+      textRegular.addEventListener('click', () => {
+        textRegular.classList.replace('text-on-surface-variant', 'text-on-primary');
+        textRegular.classList.add('bg-primary', 'shadow-sm');
+        textLarge.classList.replace('text-on-primary', 'text-on-surface-variant');
+        textLarge.classList.remove('bg-primary', 'shadow-sm');
+        document.documentElement.style.fontSize = '100%';
+      });
+
+      textLarge.addEventListener('click', () => {
+        textLarge.classList.replace('text-on-surface-variant', 'text-on-primary');
+        textLarge.classList.add('bg-primary', 'shadow-sm');
+        textRegular.classList.replace('text-on-primary', 'text-on-surface-variant');
+        textRegular.classList.remove('bg-primary', 'shadow-sm');
+        document.documentElement.style.fontSize = '112%';
+      });
+    }
+
+    // Phone Input Clear Button Visibility
+    if (phoneInput && clearBtn) {
+      phoneInput.addEventListener('input', (e) => {
+        if (e.target.value.length > 0) {
+          clearBtn.classList.remove('hidden');
+        } else {
+          clearBtn.classList.add('hidden');
+        }
+      });
+
+      clearBtn.addEventListener('click', () => {
+        phoneInput.value = '';
+        clearBtn.classList.add('hidden');
+        phoneInput.focus();
+      });
+    }
+
+    // Language Toggle Active Highlight
+    langButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        langButtons.forEach(b => {
+          b.className = 'lang-btn h-12 px-space-sm rounded-lg bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-between hover:bg-surface-variant transition-colors focus:outline-none';
+          const icon = b.querySelector('.material-symbols-outlined');
+          if (icon) {
+            icon.textContent = 'radio_button_unchecked';
+            icon.className = 'material-symbols-outlined text-[20px] text-outline-variant';
+            icon.style.fontVariationSettings = "'FILL' 0";
+          }
+        });
+        btn.className = 'lang-btn h-12 px-space-sm rounded-lg bg-primary text-on-primary font-label-md text-label-md flex items-center justify-between transition-colors shadow-sm focus:outline-none';
+        const activeIcon = btn.querySelector('.material-symbols-outlined');
+        if (activeIcon) {
+          activeIcon.textContent = 'check_circle';
+          activeIcon.className = 'material-symbols-outlined text-[20px]';
+          activeIcon.style.fontVariationSettings = "'FILL' 1";
+        }
+      });
+    });
+
+    // Simple Reassuring OTP trigger feedback
+    if (otpBtn && phoneInput) {
+      otpBtn.addEventListener('click', () => {
+        const val = phoneInput.value.replace(/\D/g, '');
+        if (val.length < 10) {
+          phoneInput.focus();
+          phoneInput.parentElement.classList.add('animate-pulse');
+          setTimeout(() => phoneInput.parentElement.classList.remove('animate-pulse'), 800);
+        } else {
+          otpBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[24px]">progress_activity</span><span>Sending OTP...</span>';
+          setTimeout(() => {
+            otpBtn.innerHTML = '<span class="material-symbols-outlined text-[24px]">check</span><span>OTP Sent to +91 ' + val + '</span>';
+            otpBtn.classList.replace('bg-primary', 'bg-tertiary');
+          }, 900);
+        }
+      });
+    }
+  })();
+</script></main></body></html>

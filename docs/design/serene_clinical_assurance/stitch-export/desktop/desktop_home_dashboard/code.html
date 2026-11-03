@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "primary-fixed": "#9cf2e8",
+        "outline": "#6e7977",
+        "tertiary": "#005f26",
+        "secondary": "#216963",
+        "surface-container-lowest": "#ffffff",
+        "on-primary-container": "#a3faef",
+        "on-surface": "#131b2e",
+        "on-error": "#ffffff",
+        "on-error-container": "#93000a",
+        "on-primary": "#ffffff",
+        "inverse-on-surface": "#eef0ff",
+        "on-primary-fixed-variant": "#00504a",
+        "error-container": "#ffdad6",
+        "on-background": "#131b2e",
+        "tertiary-fixed": "#7ffc97",
+        "primary-fixed-dim": "#80d5cb",
+        "inverse-primary": "#80d5cb",
+        "primary-container": "#0f766e",
+        "outline-variant": "#bdc9c6",
+        "on-tertiary": "#ffffff",
+        "on-secondary-fixed-variant": "#00504b",
+        "surface-container": "#eaedff",
+        "on-tertiary-fixed": "#002109",
+        "tertiary-fixed-dim": "#62df7d",
+        "background": "#faf8ff",
+        "surface-container-high": "#e2e7ff",
+        "surface-dim": "#d2d9f4",
+        "secondary-fixed-dim": "#8fd3cc",
+        "secondary-container": "#a8ece5",
+        "surface": "#faf8ff",
+        "tertiary-container": "#007a33",
+        "on-secondary": "#ffffff",
+        "inverse-surface": "#283044",
+        "surface-bright": "#faf8ff",
+        "on-secondary-fixed": "#00201e",
+        "on-tertiary-container": "#a1ffad",
+        "secondary-fixed": "#abefe8",
+        "surface-tint": "#006a63",
+        "on-surface-variant": "#3e4947",
+        "error": "#ba1a1a",
+        "on-primary-fixed": "#00201d",
+        "surface-container-highest": "#dae2fd",
+        "primary": "#005c55",
+        "surface-variant": "#dae2fd",
+        "surface-container-low": "#f2f3ff",
+        "on-tertiary-fixed-variant": "#005320",
+        "on-secondary-container": "#266d68"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "space-xl": "2rem",
+        "gutter": "1rem",
+        "margin": "1rem",
+        "space-xs": "0.375rem",
+        "space-lg": "1.5rem",
+        "space-sm": "0.75rem",
+        "space-md": "1rem"
+      },
+      "fontFamily": {
+        "body-xl": ["Noto Sans"],
+        "label-sm": ["Noto Sans"],
+        "headline-lg-mobile": ["Noto Sans"],
+        "headline-lg": ["Noto Sans"],
+        "body-md": ["Noto Sans"],
+        "label-lg": ["Noto Sans"],
+        "headline-md": ["Noto Sans"],
+        "label-md": ["Noto Sans"],
+        "headline-sm": ["Noto Sans"],
+        "body-lg": ["Noto Sans"]
+      },
+      "fontSize": {
+        "body-xl": ["20px", {"lineHeight": "30px", "fontWeight": "400"}],
+        "label-sm": ["15px", {"lineHeight": "20px", "fontWeight": "600"}],
+        "headline-lg-mobile": ["26px", {"lineHeight": "34px", "fontWeight": "700"}],
+        "headline-lg": ["30px", {"lineHeight": "38px", "fontWeight": "700"}],
+        "body-md": ["18px", {"lineHeight": "26px", "fontWeight": "500"}],
+        "label-lg": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+        "label-md": ["16px", {"lineHeight": "22px", "fontWeight": "600"}],
+        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+      }
+    }
+  }
+}</script></head><body class="bg-surface font-body-lg text-body-lg text-on-surface"><aside class="fixed left-0 top-0 h-full w-[260px] bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between py-space-lg px-gutter"><div class="flex flex-col gap-space-lg"><div class="flex items-center gap-space-sm px-space-xs"><div class="w-12 h-12 rounded-xl bg-primary-container flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[28px]">verified_user</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight leading-none">MedGuard</span><span class="font-label-sm text-label-sm text-on-surface-variant font-medium mt-1 leading-tight">Caregiver Suite</span></div></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-bold rounded-xl"><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm transition-all bg-primary-container text-on-primary-container font-bold rounded-xl" data-path="home" href="#"><span class="material-symbols-outlined">home</span><span>Home</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="patients" href="#"><span class="material-symbols-outlined">family_restroom</span><span>Patients</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="scan-medicine-strips" href="#"><span class="material-symbols-outlined">document_scanner</span><span>Scan Strips</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="schedule-and-reminders" href="#"><span class="material-symbols-outlined">calendar_month</span><span>Schedule</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="caregiver-settings" href="#"><span class="material-symbols-outlined">settings</span><span>Settings</span></a></nav></div><div class="flex flex-col gap-space-sm"><div class="flex items-center gap-space-sm p-space-sm bg-surface-container-low rounded-xl"><div class="w-3 h-3 rounded-full bg-tertiary-container animate-pulse"></div><div class="flex flex-col"><span class="font-label-sm text-label-sm font-bold text-on-surface">AI Engine Ready</span><span class="font-label-sm text-label-sm text-on-surface-variant text-[13px]">On-device Indian Rx</span></div></div><div class="flex items-center gap-space-sm p-space-sm bg-secondary-container rounded-xl text-on-secondary-container"><span class="material-symbols-outlined text-[24px]">support_agent</span><div class="flex flex-col"><span class="font-label-sm text-label-sm font-bold leading-tight">Elder Helpline</span><span class="font-label-lg text-label-lg font-bold tracking-wide leading-none mt-1">14567</span></div></div></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-[70px] bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md flex-1 max-w-[420px]"><div class="relative w-full"><span class="material-symbols-outlined absolute left-space-md top-1/2 -translate-y-1/2 text-outline text-[22px]">search</span><input class="w-full h-11 pl-11 pr-space-md rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary transition-all" placeholder="Search elder names or medicines..." type="text"/></div></div><div class="flex items-center gap-space-md"><button class="flex items-center gap-space-xs px-space-md h-11 rounded-xl bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" type="button"><span class="material-symbols-outlined text-[20px]">language</span><span class="font-label-md text-label-md">English / हिन्दी</span></button><button class="flex items-center justify-center w-11 h-11 rounded-xl bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-lg text-label-lg transition-all" title="Enlarge Text Size" type="button">A+</button><button class="flex items-center gap-space-xs px-space-md h-11 rounded-xl bg-error text-on-error font-label-md text-label-md shadow-sm hover:opacity-95 transition-opacity" type="button"><span class="material-symbols-outlined text-[20px]">emergency</span><span>SOS 108/112</span></button><div class="flex items-center gap-space-sm pl-space-sm"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="hidden xl:flex flex-col text-left leading-tight"><span class="font-label-md text-label-md text-on-surface font-bold">Sunita Sharma</span><span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Primary Caregiver</span></div></div></div></header><main class="w-full pt-[70px] bg-surface"><div class="max-w-[1200px] mx-auto p-space-xl"><div class="flex flex-col w-full">
+<!-- Welcome Banner & Quick Action Bar -->
+<section class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg mb-space-xl">
+<div class="flex flex-col max-w-2xl">
+<div class="flex items-center gap-space-xs text-primary font-label-md text-label-md mb-space-xs">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">waving_hand</span>
+<span>Namaste, Sunita</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+        Family Elders Under Care <span class="text-primary font-normal">(2 Active Profiles)</span>
+</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+        Monitoring daily polypharmacy safety, drug-drug interactions, and timely doses for your aging parents.
+      </p>
+</div>
+<!-- Primary Quick Actions -->
+<div class="flex flex-wrap items-center gap-space-md">
+<button class="h-[52px] px-space-lg rounded-xl bg-primary text-on-primary font-label-lg text-label-lg flex items-center gap-space-xs shadow-md hover:bg-primary-container active:scale-[0.98] transition-all cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[24px]">person_add</span>
+<span>+ Add New Patient</span>
+</button>
+<button class="h-[52px] px-space-lg rounded-xl bg-secondary-container text-on-secondary-container font-label-lg text-label-lg flex items-center gap-space-xs shadow-sm hover:opacity-95 active:scale-[0.98] transition-all cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[24px]">photo_camera</span>
+<span>Scan New Medicine Strip</span>
+</button>
+</div>
+</section>
+<!-- 3-Column Key Metric Cards -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-space-lg mb-space-xl">
+<!-- Stat 1: Safety Alert Status -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Safety Alert Status</span>
+<div class="flex items-baseline gap-space-xs mt-space-xs">
+<span class="font-headline-lg text-headline-lg font-bold text-error">1</span>
+<span class="font-label-md text-label-md font-bold text-error">Critical Interaction</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-xl bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+</div>
+<div class="my-space-md bg-surface-container-low p-space-sm rounded-xl">
+<div class="flex items-center gap-space-xs text-on-surface font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-error text-[18px]">emergency</span>
+<span>Ramesh Sharma</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-[15px] mt-0.5 leading-snug">
+          Aspirin + Clopidogrel overlap increases bleeding risk.
+        </p>
+</div>
+<button class="h-12 w-full rounded-xl bg-error text-on-error font-label-md text-label-md flex items-center justify-center gap-space-xs hover:opacity-90 transition-opacity" type="button">
+<span class="material-symbols-outlined text-[20px]">healing</span>
+<span>Resolve Alert</span>
+</button>
+</div>
+<!-- Stat 2: Today's Dose Adherence -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Today's Dose Adherence</span>
+<div class="flex items-baseline gap-space-xs mt-space-xs">
+<span class="font-headline-lg text-headline-lg font-bold text-primary">83%</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Completed</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">schedule</span>
+</div>
+</div>
+<div class="my-space-md">
+<div class="flex justify-between items-center mb-1.5 font-label-sm text-label-sm text-on-surface">
+<span>10 of 12 doses confirmed on time</span>
+<span class="font-bold text-tertiary">2 Remaining</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden flex">
+<div class="bg-primary h-full rounded-full transition-all duration-500" style="width: 83.33%;"></div>
+</div>
+<div class="flex items-center gap-2 mt-2 text-on-surface-variant font-label-sm text-label-sm text-[13px]">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+<span>Next scheduled: Kamala's Metformin at 8:30 PM</span>
+</div>
+</div>
+<button class="h-12 w-full rounded-xl bg-surface-container text-primary font-label-md text-label-md flex items-center justify-center gap-space-xs hover:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">event_available</span>
+<span>Check Full Routine</span>
+</button>
+</div>
+<!-- Stat 3: On-Device Privacy & AI -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Privacy &amp; AI Shield</span>
+<div class="flex items-baseline gap-space-xs mt-space-xs">
+<span class="font-headline-lg text-headline-lg font-bold text-tertiary">100%</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Offline Guardian</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary shrink-0">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">shield_lock</span>
+</div>
+</div>
+<div class="my-space-md space-y-2">
+<div class="flex items-center gap-space-xs text-on-surface font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-tertiary text-[20px]">check_circle</span>
+<span>Zero unencrypted cloud transmission</span>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-tertiary text-[20px]">check_circle</span>
+<span>ABDM Compliant Clinical Safety DB</span>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-tertiary text-[20px]">check_circle</span>
+<span>Vernacular Voice-Assisted Parsing</span>
+</div>
+</div>
+<div class="h-12 w-full rounded-xl bg-surface-container-low text-on-surface-variant font-label-md text-label-md flex items-center justify-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-tertiary">lock</span>
+<span>Local Hardware Encryption Active</span>
+</div>
+</div>
+</section>
+<!-- Main Asymmetric Grid: 2/3 Elder Cards, 1/3 Quick Actions & Caregiver Tools -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl">
+<!-- Left 2/3 Column: Elder Profiles -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">
+          Current Elders (Prescription Monitors)
+        </h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Auto-synced with Doctor Rx</span>
+</div>
+<!-- Patient Card 1: Ramesh Sharma (Critical Alert) -->
+<article class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<!-- Top Profile Row -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="relative">
+<img class="w-16 h-16 rounded-xl object-cover shadow-sm" data-alt="Portrait photo of an elderly Indian grandfather in his mid 70s with silver gray hair, gentle brown eyes, wearing a simple beige khadi kurta, soft warm indoor natural window lighting, dignified peaceful expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlqlZK2KQ1cXAZUXchjYKcqAQ26xHO1pyx0cCyS8O2w0qFYK4vdsTyDshfsGcc7PNscTfM_DSUykISK4YwVMhCrl1ME8SvVeHHR0aX2VcRXe4g3OFKMhTT502GZqryzWLhEm8u_GHCfsz2_BfLK1kpFg1bP4sG0NWmknwwnGzYdF96mT4jymJZsxwtgq7zl5rCjAKXsfBLkkmCWgox2G0vVUNR5jbrwgXKUuidEzA"/>
+<span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-error flex items-center justify-center text-on-error text-[12px] font-bold">!</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Ramesh Sharma</h3>
+<span class="font-label-sm text-label-sm bg-surface-container px-space-xs py-0.5 rounded text-on-surface-variant">Father • 74 yrs</span>
+</div>
+<div class="flex flex-wrap items-center gap-space-xs text-on-surface-variant font-body-md text-body-md text-[15px] mt-0.5">
+<span>Blood: <strong>B+</strong></span>
+<span>•</span>
+<span>Doctor: <strong>Dr. Alok Verma (Cardiology)</strong></span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="px-space-md py-1.5 rounded-full bg-surface-container font-label-md text-label-md text-primary font-bold">
+              6 Active Medicines
+            </span>
+</div>
+</div>
+<!-- Clinical Tags -->
+<div class="flex flex-wrap gap-space-xs">
+<span class="px-space-sm py-1 rounded-lg bg-surface-container-low text-on-surface font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">monitor_heart</span>
+            Hypertension (12 yrs)
+          </span>
+<span class="px-space-sm py-1 rounded-lg bg-surface-container-low text-on-surface font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">bloodtype</span>
+            Type 2 Diabetes
+          </span>
+<span class="px-space-sm py-1 rounded-lg bg-surface-container-low text-on-surface font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">history</span>
+            Post-Angioplasty (2021)
+          </span>
+</div>
+<!-- URGENT ALERT BANNER -->
+<div class="bg-error-container text-on-error-container p-space-md rounded-xl flex flex-col sm:flex-row items-start gap-space-sm">
+<span class="material-symbols-outlined text-[28px] text-error shrink-0" style="font-variation-settings: 'FILL' 1;">fmd_bad</span>
+<div class="flex flex-col flex-1">
+<span class="font-label-md text-label-md font-bold text-error">
+              CRITICAL INTERACTION FOUND: Dual Antiplatelet Overlap
+            </span>
+<p class="font-body-md text-body-md text-on-error-container text-[16px] mt-1 leading-relaxed">
+<strong>Aspirin 75mg</strong> (Ecosprin) and <strong>Clopidogrel 75mg</strong> (Deplatt) taken concurrently without proton pump gastro-protection increases mucosal hemorrhage risk in geriatric patients. Immediate physician confirmation recommended.
+            </p>
+</div>
+</div>
+<!-- Mini Medication Timeline Peek -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs">
+<div class="flex justify-between items-center text-on-surface font-label-sm text-label-sm">
+<span class="font-bold">Dose Status Today (4 of 5 taken):</span>
+<span class="text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">done_all</span> Morning &amp; Afternoon completed
+            </span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-xs pt-space-xs">
+<div class="bg-surface-container-lowest p-space-xs rounded-lg flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface">Telma 40</span>
+<span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs rounded-lg flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface">Glycomet 500</span>
+<span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs rounded-lg flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface">Atorva 10</span>
+<span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span>
+</div>
+<div class="bg-surface-container-lowest p-space-xs rounded-lg flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-error font-bold">Ecosprin 75</span>
+<span class="material-symbols-outlined text-error text-[18px]">pending</span>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-wrap items-center gap-space-sm pt-space-xs">
+<button class="h-12 px-space-md rounded-xl bg-error text-on-error font-label-md text-label-md flex items-center gap-space-xs hover:opacity-90 transition-opacity" type="button">
+<span class="material-symbols-outlined text-[20px]">report_problem</span>
+<span>Check Safety Report</span>
+</button>
+<button class="h-12 px-space-md rounded-xl bg-surface-container-low text-primary font-label-md text-label-md flex items-center gap-space-xs hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">pill</span>
+<span>View 6 Medicines</span>
+</button>
+<button class="h-12 px-space-md rounded-xl bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-space-xs hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+<span>Today's Schedule</span>
+</button>
+</div>
+</article>
+<!-- Patient Card 2: Kamala Sharma (All Safe) -->
+<article class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<!-- Top Profile Row -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="relative">
+<img class="w-16 h-16 rounded-xl object-cover shadow-sm" data-alt="Portrait photo of an elderly Indian grandmother in her early 70s with silver-streaked hair neatly pinned, smiling serenely, dressed in a traditional handloom cotton saree, warm home ambiance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx68tsb7OcYPiaj_wcHHAXIcgJJ_ZeWnnNUtJnoMgBMt4LPfLJqBHGqED20IUh9YYe7mN8NVShF9LUW68q7R8cutegMkMYyC0cpd-Xq5LgrviHzGTI_V1kDAq_VDMWqTRoAtWerz3wf3pkqWKRNFcGUx-TJqhrZyfdiBDXxdTNyg9gpN9aGd9QsUQXyq6TP1XSLWCJqP4yxrlBJh44fY_IBunXDKOGsTAwtg-8uqo"/>
+<span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-tertiary flex items-center justify-center text-on-tertiary text-[12px] font-bold">✓</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Kamala Sharma</h3>
+<span class="font-label-sm text-label-sm bg-surface-container px-space-xs py-0.5 rounded text-on-surface-variant">Mother • 71 yrs</span>
+</div>
+<div class="flex flex-wrap items-center gap-space-xs text-on-surface-variant font-body-md text-body-md text-[15px] mt-0.5">
+<span>Blood: <strong>O+</strong></span>
+<span>•</span>
+<span>Doctor: <strong>Dr. Meenakshi Rao (Internal Medicine)</strong></span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="px-space-md py-1.5 rounded-full bg-surface-container font-label-md text-label-md text-primary font-bold">
+              4 Active Medicines
+            </span>
+</div>
+</div>
+<!-- Clinical Tags -->
+<div class="flex flex-wrap gap-space-xs">
+<span class="px-space-sm py-1 rounded-lg bg-surface-container-low text-on-surface font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">healing</span>
+            Osteoarthritis (Knee)
+          </span>
+<span class="px-space-sm py-1 rounded-lg bg-surface-container-low text-on-surface font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">wb_sunny</span>
+            Vitamin D3 Deficiency
+          </span>
+<span class="px-space-sm py-1 rounded-lg bg-surface-container-low text-on-surface font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">local_pharmacy</span>
+            Mild Dyspepsia
+          </span>
+</div>
+<!-- SAFE STATUS BANNER -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">verified</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-tertiary">
+              ✓ All Clear &amp; Safe: No Negative Interactions
+            </span>
+<p class="font-body-md text-body-md text-on-surface-variant text-[15px] mt-0.5">
+              Verified safe across Calcium Citrate, Calcirol 60K, Pantocid 40, and Paracetamol 650 PRN.
+            </p>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-wrap items-center gap-space-sm pt-space-xs">
+<button class="h-12 px-space-md rounded-xl bg-primary text-on-primary font-label-md text-label-md flex items-center gap-space-xs hover:bg-primary-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">medication</span>
+<span>View 4 Medicines</span>
+</button>
+<button class="h-12 px-space-md rounded-xl bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-space-xs hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+<span>Today's Schedule</span>
+</button>
+<button class="h-12 px-space-md rounded-xl bg-surface-container-low text-secondary font-label-md text-label-md flex items-center gap-space-xs hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">document_scanner</span>
+<span>Scan Add-on Strip</span>
+</button>
+</div>
+</article>
+</div>
+<!-- Right 1/3 Column: Intake Scanner & Elder Care Resources -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Quick Blister Strip Scanner Widget -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">document_scanner</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Quick Strip Intake</h3>
+</div>
+<span class="px-space-xs py-0.5 bg-tertiary-fixed text-tertiary rounded font-label-sm text-label-sm text-[12px] font-bold">100% Offline</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-[15px]">
+          Take a photo of any blister strip packaging foil or prescription slip. Our on-device Indian Rx engine analyzes composition instantly.
+        </p>
+<!-- Drag & Drop / Camera Dropzone -->
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col items-center justify-center text-center cursor-pointer hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[42px] text-primary mb-space-xs">add_a_photo</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">Tap to capture or upload foil image</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1">Supports Cipla, Sun Pharma, Mankind &amp; Generics</span>
+</div>
+<!-- Bilingual Assistance Snippet -->
+<div class="p-space-sm bg-surface-container rounded-xl flex flex-col gap-1">
+<div class="flex items-center gap-space-xs text-on-surface font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[18px] text-primary">translate</span>
+<span>Scanning Tip (हिंदी &amp; English)</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-[14px] leading-snug">
+<em>"दवाई के पत्ते को रोशनी में रखें ताकि उसका नाम साफ दिखाई दे।"</em><br/>
+            Ensure the expiry date and salt composition are not covered by fingers.
+          </p>
+</div>
+<button class="h-12 w-full rounded-xl bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center gap-space-xs hover:bg-primary-container transition-colors cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[20px]">camera_enhance</span>
+<span>Launch Camera Reader</span>
+</button>
+</div>
+<!-- Caregiver Tip of the Day -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-xs text-secondary font-label-md text-label-md font-bold">
+<span class="material-symbols-outlined text-[22px]">lightbulb</span>
+<span>Caregiver Tip of the Day</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold text-[18px]">
+          Geriatric Blood Pressure Timing
+        </h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-[15px] leading-relaxed">
+          Unless explicitly advised by Dr. Verma, avoid administering antihypertensives (like Telmisartan) right before bed to prevent postural hypotension (dizziness upon waking to use the bathroom at night). Morning doses with lukewarm water remain optimal.
+        </p>
+<div class="flex items-center justify-between pt-space-xs font-label-sm text-label-sm text-primary">
+<span class="font-bold">Geriatric Pharmacology Series #14</span>
+<a class="hover:underline flex items-center gap-0.5" href="#">
+            Read Guide <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Direct 24/7 Elder Support Helpline -->
+<div class="bg-secondary-container text-on-secondary-container p-space-lg rounded-xl shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-bold">Government of India &amp; NISD</span>
+<span class="material-symbols-outlined text-[24px]">call</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md font-bold text-on-secondary-container">14567</span>
+<span class="font-label-md text-label-md font-bold">National Elderline Helpline (Toll-Free)</span>
+</div>
+<p class="font-body-md text-body-md text-on-secondary-container text-[14px]">
+          Free emotional support, field response, health guidance, and emergency caregiver counseling available 8 AM to 8 PM across all Indian states.
+        </p>
+<a class="h-11 rounded-xl bg-surface-container-lowest text-primary font-label-md text-label-md flex items-center justify-center gap-space-xs font-bold shadow-sm hover:opacity-90 transition-opacity" href="tel:14567">
+<span class="material-symbols-outlined text-[20px]">phone_in_talk</span>
+<span>Dial 14567 Now</span>
+</a>
+</div>
+</div>
+</div>
+</div></div></main></div></body></html>
