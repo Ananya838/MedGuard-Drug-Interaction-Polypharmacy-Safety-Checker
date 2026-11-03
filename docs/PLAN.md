@@ -1,3 +1,67 @@
+# Revision History
+
+## Changes in Revision 3
+
+1. **Strict Input Boundary for `/api/check`:**
+   - `/api/check` strictly accepts confirmed `brandId` integers and an `unrecognized` array of raw strings.
+   - Raw free-text strings are exclusively processed by `/api/medicines/normalize` prior to the mandatory user confirm step.
+   - Removed all `brandId: null` or raw custom string representations from `/api/check` payloads.
+
+2. **Negative Tests Contextualized to Fixed Test Datasets:**
+   - Clarified that negative interaction tests are evaluated against a small fixed test dataset where the pair is known to be absent, validating engine mechanics.
+   - Explicitly eliminated any claim or assertion that real-world drug pairs have no clinical interaction.
+
+3. **Database-Level Row-Level Security (RLS) Hardening:**
+   - Mandated execution of `SET LOCAL app.current_user_id = '...'` within each database transaction on checked-out pool connections.
+   - Required application connection pool to connect as a dedicated, non-owner, non-superuser role (`medguard_app_user`).
+   - Applied `FORCE ROW LEVEL SECURITY` to all five user-scoped tables (`patients`, `patient_medicines`, `scan_history`, `reminders`, `adherence_log`).
+   - Standardized RLS policies on `scan_history`, `reminders`, and `adherence_log` to support shared caregiver delegation via `caregiver_access`.
+
+4. **`ingredient_synonyms` Table & Synonym Resolution:**
+   - Added `ingredient_synonyms` relational table (e.g., mapping `acetaminophen` to canonical `paracetamol`).
+   - Enforced synonym resolution across `normalizer.js`, `import-ddinter.js`, and `import-indian-brands.js`.
+   - Added explicit unit tests verifying synonym handling.
+
+5. **Severity-Based Action Text Templates in `constants.js`:**
+   - Replaced per-row database action text with centralized, fixed severity-based templates defined in `server/engine/constants.js`.
+   - Never uses per-row custom advice and never uses an LLM.
+   - Updated unverified starter test specifications to assert exact matches against these standardized templates.
+
+6. **As-Needed (PRN) Dosing Support (`is_prn`):**
+   - Added `is_prn BOOLEAN DEFAULT FALSE` to `patient_medicines`.
+   - Specified that `doseChecker.js` outputs `"Cannot calculate daily total for as-needed (PRN) medicine"` instead of guessing or estimating daily doses.
+
+7. **Controlled Vocabularies for Allergies and Conditions:**
+   - Replaced free-text allergy and condition fields with controlled vocabularies:
+     - Allergies: Structured references to controlled ingredient IDs and drug class IDs (`[{"type": "ingredient", "id": 12}, {"type": "class", "id": 4}]`).
+     - Conditions: Standardized alphanumeric clinical condition codes (e.g., `CKD`, `HEART_FAILURE`, `ASTHMA`).
+   - Updated `contraindications` schema to reference controlled `condition_code`.
+
+8. **Name-Based Seed Files with Dynamic ID Resolution:**
+   - Seed JSON files reference ingredients and classes by standardized text name (human-readable and resilient).
+   - `scripts/seed.js` dynamically resolves and links integer primary/foreign keys during ingestion.
+
+9. **Targeted / Scoped Rule Loading in API:**
+   - Rather than loading the entire interaction database into memory, the API queries only the rules relevant to the specific ingredient IDs present in the request.
+   - Passes these scoped rule subsets into the pure `runAllChecks()` engine function.
+
+10. **Terminology & Neutral Language Refinement:**
+    - In starter pair #2 (Aspirin + Ibuprofen), replaced "safe pain relief options" with "alternative pain relief options".
+    - Removed all occurrences of the word "safe" from the glossary and architectural text.
+
+11. **Folder Ownership, Configuration Paths & Upstream Documentation Notes:**
+    - Clarified frontend API ownership: Frontend Agent scaffolds `/client/src/api` with mocked clients during Phase 4; Integration Agent connects live endpoints in Phase 5.
+    - Standardized `.env.example` path to `server/.env.example`.
+    - Documented required updates to be made by human in `AGENTS.md` (Section 3 folder ownership) and `docs/prompts/04a-frontend-desktop.md` (mock API scaffolding).
+
+---
+
+## Changes in Revision 2
+
+*(Archived list of previous changes: small seed data, unverified starter set naming, removal of clinical advice, RLS foundation, integer foreign keys, structured dosing, and CRUD endpoints).*
+
+---
+
 # MedGuard: Master Engineering Implementation Plan
 
 > [!IMPORTANT]
@@ -14,12 +78,14 @@ Because you are new to agentic engineering, here is a simple translation of key 
 | **Agentic Engineering** | Building software using specialized AI agents, where each agent has strict boundaries, owns specific folders, and follows strict rules. | Prevents AI agents from overwriting each other's code or making unauthorized changes to critical safety logic. |
 | **Deterministic Engine** | Code that always produces the exact same answer given the same input, using fixed rules and verified database tables. | We never let an AI "hallucinate" or guess whether two drugs interact. Lives depend on deterministic correctness. |
 | **Active Ingredient vs. Brand** | A **brand** is the commercial name (e.g., *Crocin* or *Dolo 650*), while the **active ingredient** is the chemical that does the work (both are *Paracetamol*). | Patients frequently take two different brands containing the exact same chemical, risking accidental toxic overdose. |
-| **Normalization** | The process of taking messy text or brand names (e.g., *"Pan-D tablet"*) and mapping them to their verified ingredients (*Pantoprazole 40mg + Domperidone 30mg*). | Allows the safety engine to evaluate interactions based on standard international chemical identifiers. |
-| **RxNorm / RxCUI** | A standardized catalog of clinical drugs created by the US National Library of Medicine. Each ingredient has an ID called an RxCUI. | Provides a universal language to link Indian brands to global interaction databases like DDInter. |
+| **Normalization** | The process of taking messy text or brand names (e.g., *"Pan-D tablet"*) and mapping them to their ingredients (*Pantoprazole 40mg + Domperidone 30mg*). | Allows the safety engine to evaluate interactions based on standard international chemical identifiers. |
+| **Ingredient Synonyms** | A lookup table connecting alternative chemical names (e.g., *Acetaminophen* = *Paracetamol*). | Ensures that drug data from different international registries matches consistently. |
+| **Controlled Vocabulary** | A standardized, pre-defined list of terms, IDs, or codes used instead of free-form typing. | Eliminates typographical errors and ambiguities when evaluating patient allergies and chronic medical conditions. |
+| **RxNorm / RxCUI** | A standardized catalog of clinical drugs created by the US National Library of Medicine. Each ingredient has an ID called an RxCUI. | Provides a universal identifier to link Indian brands to global interaction databases. |
 | **Beers Criteria** | A clinical guideline published by the American Geriatrics Society listing medications that are potentially inappropriate for adults aged 65 and older. | Elderly bodies process medicines differently; certain sleeping pills, allergy medicines, or pain relievers can cause falls, confusion, or urinary retention. |
 | **SQL Schema & Migration** | The blueprint of the database tables (Schema) and safe, incremental step-by-step update scripts (Migrations). | Keeps database changes versioned, reversible, and consistent across development and production. |
-| **Row-Level Security (RLS)** | A database security rule ensuring a user can only read or modify rows that belong to them. | Prevents one caregiver from accidentally or maliciously viewing another caregiver's patient health data. |
-| **JWT (JSON Web Token)** | A secure, encrypted digital badge issued upon login that the browser sends with every request to prove identity. | Ensures that only authenticated caregivers can access their loved ones' records. |
+| **Row-Level Security (RLS)** | A database security rule ensuring a user can only read or modify rows that belong to them. | Provides an in-depth defensive layer ensuring one caregiver cannot access another caregiver's patient health data. |
+| **JWT (JSON Web Token)** | A secure, signed digital badge issued upon login that the browser sends with every request to prove identity. | Ensures that only authenticated caregivers can access their loved ones' records. |
 | **Web Worker** | A background script running inside the user's web browser that executes heavy tasks without freezing the visual interface. | OCR strip scanning is computationally heavy; running it in a Web Worker keeps the app responsive and smooth. |
 | **PWA (Progressive Web App)** | A website built with modern web technologies that can be installed on an Android or iOS home screen like a native mobile app and works offline. | Caregivers can install MedGuard directly from the browser without needing an app store. |
 
@@ -32,69 +98,77 @@ Strict folder ownership guarantees that no agent touches files outside its desig
 ```
 MedGuard/
 ├── AGENTS.md                                # Human only: master project rules
-├── PRD.md                                  # Human only: product requirements document
 ├── README.md                               # Human only: project overview & roadmap
+│
+├── docs/                                   # Human only (edits only on explicit request)
+│   ├── PRD.md                              # Product requirements document
+│   ├── PLAN.md                             # Approved master implementation plan
+│   └── design/                             # Approved UI design system & Stitch export
 │
 ├── db/                                     # Owner: Engine Agent
 │   ├── migrations/                         # Sequential SQL migration files
-│   │   ├── 001_initial_schema.sql          # Users, patients, access, audit
-│   │   ├── 002_drug_catalog.sql            # Ingredients, brands, brand_ingredients
-│   │   ├── 003_safety_rules.sql            # Interactions, contraindications, beers, food, timing
-│   │   ├── 004_patient_records.sql         # Patient medicines, scan history, reminders, adherence
-│   │   └── 005_indexes_and_rls.sql         # Performance indexes, trigram search, RLS policies
-│   ├── seeds/                              # Curated seed datasets for local testing
-│   │   ├── indian_brands_seed.json         # Top Indian brands mapped to ingredients
-│   │   ├── ingredients_seed.json           # Active ingredients with drug classes and max doses
-│   │   ├── interactions_seed.json          # Known drug-drug interactions (DDInter format)
-│   │   └── safety_rules_seed.json          # Beers criteria, timing, contraindications, food
-│   └── dbClient.js                         # PostgreSQL / Supabase connection pool setup
+│   │   ├── 001_initial_schema.sql          # Users, refresh_tokens, patients, access, audit
+│   │   ├── 002_drug_catalog.sql            # Ingredients, synonyms, classes, brands, brand_ingredients
+│   │   ├── 003_safety_rules.sql            # Interactions, contraindications, beers, food, timing, dose_limits
+│   │   ├── 004_patient_records.sql         # Patient medicines (with is_prn), scan history, reminders, adherence
+│   │   └── 005_indexes_and_rls.sql         # Performance indexes, trigram search, session-based RLS
+│   ├── seeds/                              # Minimal sample seed data (30-50 brands, names resolved by seed.js)
+│   │   ├── sample_indian_brands.json       # Labeled: MedGuard sample data (not clinically verified)
+│   │   ├── sample_ingredients.json         # Ingredients with classes, synonyms, and age-adjusted dose limits
+│   │   ├── sample_interactions.json        # Small starter interaction set (references ingredient names)
+│   │   └── sample_safety_rules.json        # Sample Beers, timing, contraindications, food rules
+│   └── dbClient.js                         # PostgreSQL connection pool (DATABASE_URL, non-superuser role)
 │
 ├── scripts/                                # Owner: Engine Agent
-│   ├── migrate.js                          # Node.js runner to apply SQL migrations in sequence
-│   ├── seed.js                             # Seed database with sample/curated datasets
-│   ├── import-ddinter.js                   # Ingest and deduplicate DDInter interaction data
-│   ├── import-indian-brands.js             # Ingest local Indian brand catalog
-│   └── verify-db.js                        # Health check verifying tables, indexes, and counts
+│   ├── migrate.js                          # Applies SQL migrations in sequential order
+│   ├── seed.js                             # Loads minimal sample data and resolves names to IDs
+│   ├── import-ddinter.js                   # Ingests user-downloaded DDInter dataset (using synonyms)
+│   ├── import-indian-brands.js             # Ingests user-provided Indian brand CSV (using synonyms)
+│   └── verify-db.js                        # Health check verifying tables, foreign keys, row counts
 │
 ├── server/                                 # Backend application
-│   ├── server.js                           # Server entrypoint (starts Express app)
-│   ├── app.js                              # Express app configuration & middleware pipeline
-│   ├── config.js                           # Environment variable validation (.env loading)
-│   ├── .env.example                        # Template of required configuration keys
+│   ├── server.js                           # Owner: API Agent (server entrypoint)
+│   ├── app.js                              # Owner: API Agent (Express setup & middleware pipeline)
+│   ├── config.js                           # Owner: API Agent (env validation via dotenv)
+│   ├── .env.example                        # Owner: API Agent (template of required keys)
 │   │
 │   ├── auth/                               # Owner: API Agent
-│   │   ├── authService.js                  # Password hashing (bcrypt) & token signing
-│   │   └── tokenService.js                 # Refresh token lifecycle & rotation
+│   │   ├── authService.js                  # Password hashing (bcrypt) & JWT signing
+│   │   └── tokenService.js                 # Refresh token lifecycle, rotation & revocation
 │   │
 │   ├── middleware/                         # Owner: API Agent
-│   │   ├── authenticate.js                 # JWT verification (attaches req.user)
-│   │   ├── validate.js                     # Request schema validator (Zod or lightweight schema)
-│   │   ├── rateLimiter.js                  # IP & user rate limiting (for auth and check routes)
-│   │   └── errorHandler.js                 # Centralized error handler (NEVER leaks health data)
+│   │   ├── authenticate.js                 # JWT verification & req.user attachment
+│   │   ├── validate.js                     # Request schema validation
+│   │   ├── rateLimiter.js                  # IP & user rate limiting for auth and check routes
+│   │   └── errorHandler.js                 # Centralized error handler (NEVER logs patient/drug data)
 │   │
 │   ├── routes/                             # Owner: API Agent
-│   │   ├── authRoutes.js                   # /api/auth (register, login, refresh, logout)
-│   │   ├── patientRoutes.js                # /api/patients & /api/patients/:id/medicines
-│   │   ├── medicineRoutes.js               # /api/medicines/search & /api/medicines/normalize
-│   │   ├── checkRoutes.js                  # /api/check (core safety analysis endpoint)
-│   │   ├── reminderRoutes.js               # /api/reminders & adherence logging
-│   │   └── reportRoutes.js                 # /api/patients/:id/report.pdf (PDF generation)
+│   │   ├── authRoutes.js                   # Register, login, refresh, logout, delete account
+│   │   ├── patientRoutes.js                # Patient CRUD & patient medicines CRUD
+│   │   ├── medicineRoutes.js               # Autocomplete search & brand normalization (/normalize)
+│   │   ├── checkRoutes.js                  # Core safety check endpoint (/api/check) with scoped rule queries
+│   │   └── reportRoutes.js                 # One-page PDF report generation
+│   │
+│   ├── tests/                              # Owner: API Agent
+│   │   ├── auth.test.js                    # Auth endpoints, token refresh, and rate limiting tests
+│   │   ├── patients.test.js                # Patient CRUD, scoping, and medicine CRUD tests
+│   │   └── check.test.js                   # Safety check route validation & error handling tests
 │   │
 │   └── engine/                             # Owner: Engine Agent
-│       ├── index.js                        # Orchestrator: runAllChecks(patient, medicines)
-│       ├── normalizer.js                   # Brand-to-ingredient & combination expander
-│       ├── duplicateChecker.js             # Same ingredient & same drug-class detector
-│       ├── interactionChecker.js           # Pairwise drug-drug interaction checker (A < B)
-│       ├── timingChecker.js                # Spacing rules (e.g., antacids vs antibiotics)
-│       ├── allergyChecker.js               # Ingredient and drug-class allergy cross-check
-│       ├── contraindicationChecker.js      # Patient disease/condition vs drug contraindications
-│       ├── beersChecker.js                 # Beers Criteria validator for age >= 65
+│       ├── index.js                        # Orchestrator: runAllChecks(patient, confirmedMedicines, scopedRules)
+│       ├── normalizer.js                   # Resolves brands & synonyms to ingredients & combinations
+│       ├── duplicateChecker.js             # Detects duplicate ingredients and duplicate drug classes
+│       ├── interactionChecker.js           # Pairwise interaction checker (canonical integer A < B)
+│       ├── timingChecker.js                # Administration spacing conflict checker
+│       ├── allergyChecker.js               # Controlled allergy & cross-sensitivity class checker
+│       ├── contraindicationChecker.js      # Controlled disease code contraindication checker
+│       ├── beersChecker.js                 # Beers Criteria validator for patients age >= 65
 │       ├── foodChecker.js                  # Food & alcohol interaction rules
-│       ├── doseChecker.js                  # Daily cumulative maximum dose validator
-│       ├── constants.js                    # Severity definitions, standard disclaimer text
-│       └── tests/                          # Safety engine unit & golden tests
-│           ├── golden-pairs.json           # 32 verified dangerous drug pairs
-│           ├── normalizer.test.js
+│       ├── doseChecker.js                  # Daily max dose checker (supports is_prn flag)
+│       ├── constants.js                    # Severity definitions, standard action templates, disclaimer
+│       └── tests/                          # Safety engine unit & unverified starter test suite
+│           ├── starter-pairs.json          # Unverified starter set (33 dangerous pairs + negatives)
+│           ├── normalizer.test.js          # Includes synonym resolution unit test
 │           ├── duplicateChecker.test.js
 │           ├── interactionChecker.test.js
 │           ├── timingChecker.test.js
@@ -103,7 +177,7 @@ MedGuard/
 │           ├── beersChecker.test.js
 │           ├── foodChecker.test.js
 │           ├── doseChecker.test.js
-│           └── engine.test.js              # Full pipeline golden suite
+│           └── engine.test.js              # Full pipeline golden suite with unverified starter set
 │
 ├── client/                                 # Frontend application (React + Vite + Tailwind)
 │   ├── index.html                          # HTML shell with viewport, Noto Sans, PWA meta
@@ -121,22 +195,23 @@ MedGuard/
 │       ├── App.jsx                         # Router configuration and global providers
 │       ├── index.css                       # Design tokens, typography base, accessibility resets
 │       │
-│       ├── api/                            # Centralized API client layer
+│       ├── api/                            # Scaffolding & Mocks: Frontend Agent (Phase 4); Live API: Integration Agent (Phase 5)
 │       │   ├── client.js                   # Fetch/Axios instance with auth interceptors
-│       │   ├── authApi.js                  # Auth endpoint calls
-│       │   ├── patientApi.js               # Patient CRUD & medicine list calls
+│       │   ├── authApi.js                  # Auth calls (login, register, refresh, logout, delete account)
+│       │   ├── patientApi.js               # Patient CRUD & patient medicine list calls
 │       │   ├── medicineApi.js              # Search and normalization calls
-│       │   └── checkApi.js                 # Safety check calls (swappable to mocks)
+│       │   └── checkApi.js                 # Safety check call
 │       │
 │       ├── mocks/                          # Mocked backend data for isolated UI dev
 │       │   ├── mockPatients.js
 │       │   ├── mockMedicines.js
-│       │   └── mockReport.js
+│       │   ├── mockReport.js
+│       │   └── mockSchedule.js             # Mock data for deferred reminders & schedule features
 │       │
 │       ├── context/                        # Global state management
 │       │   ├── AuthContext.jsx             # Caregiver session state
 │       │   ├── PatientContext.jsx          # Selected active patient
-│       │   ├── LanguageContext.jsx         # English / Hindi / Regional switch
+│       │   ├── LanguageContext.jsx         # English / Hindi switcher
 │       │   └── TextSizeContext.jsx         # Large-text mode scaling
 │       │
 │       ├── i18n/                           # Multilingual translations
@@ -151,7 +226,7 @@ MedGuard/
 │       │   │   ├── Chip.jsx                # Dismissible condition/allergy tag
 │       │   │   ├── Input.jsx               # 56px input with 18px text and clear button
 │       │   │   ├── SeverityBadge.jsx       # Icon + Label + Fill (never color alone)
-│       │   │   ├── FindingCard.jsx         # Structured finding with what-to-do guidance
+│       │   │   ├── FindingCard.jsx         # Structured finding with doctor-consultation action
 │       │   │   ├── DoseLimitBar.jsx        # Visual progress bar for max daily dose
 │       │   │   ├── PrivacyPromiseBanner.jsx# "Your photos stay on this phone" banner
 │       │   │   ├── DisclaimerFooter.jsx    # Mandatory screening tool disclaimer
@@ -169,12 +244,18 @@ MedGuard/
 │       │   ├── HomeDashboardPage.jsx       # 2. Home dashboard
 │       │   ├── PatientDetailPage.jsx       # 3. Patient detail view
 │       │   ├── ScanPage.jsx                # 4. Medicine strip scanner (camera / upload)
-│       │   ├── ConfirmMedicinesPage.jsx    # 5. Confirm & edit detected medicines
+│       │   ├── ConfirmMedicinesPage.jsx    # 5. Confirm & edit detected medicines (outputs brandIds)
 │       │   ├── SafetyReportPage.jsx        # 6. Safety report (with print stylesheet)
-│       │   ├── PatientProfileFormPage.jsx  # 7. Add/edit patient profile
-│       │   ├── SchedulePage.jsx            # 8. Daily schedule & reminders
+│       │   ├── PatientProfileFormPage.jsx  # 7. Add/edit patient profile (uses controlled codes)
+│       │   ├── SchedulePage.jsx            # 8. Daily schedule & reminders (mocked backend in v1)
 │       │   ├── EmergencyCardPage.jsx       # 9. Emergency medical card
-│       │   └── SettingsPage.jsx            # 10. Caregiver settings & data deletion
+│       │   └── SettingsPage.jsx            # 10. Caregiver settings & delete account
+│       │
+│       ├── __tests__/                      # Frontend unit and component tests
+│       │   ├── Button.test.jsx
+│       │   ├── SeverityBadge.test.jsx
+│       │   ├── FindingCard.test.jsx
+│       │   └── ConfirmMedicinesPage.test.jsx
 │       │
 │       └── ocr/                            # Owner: OCR Agent ONLY
 │           ├── index.js                    # Exported public scanStrip(imageFile) hook
@@ -186,17 +267,19 @@ MedGuard/
 │               └── evaluate-ocr.js
 │
 ├── test-assets/                            # Sample blister strip photos for OCR testing
-└── docs/                                   # Documentation and approved UI design
 ```
 
 ---
 
 ## 3. SQL Schema & Migration Plan
 
-The database runs on PostgreSQL (hosted on Supabase or local PostgreSQL). All patient records are protected by Row-Level Security (RLS) scoped strictly to the authenticated caregiver.
+The database runs on standard PostgreSQL (connecting via `DATABASE_URL` as a non-owner, non-superuser role: `medguard_app_user`).
+
+### Data Architecture Overview
 
 ```mermaid
 erDiagram
+    users ||--o{ refresh_tokens : "has"
     users ||--o{ patients : "manages"
     users ||--o{ caregiver_access : "granted"
     patients ||--o{ caregiver_access : "shares"
@@ -206,17 +289,22 @@ erDiagram
     reminders ||--o{ adherence_log : "logs"
     brands ||--o{ brand_ingredients : "contains"
     ingredients ||--o{ brand_ingredients : "in"
+    ingredients ||--o{ ingredient_synonyms : "has_synonym"
+    ingredients ||--o{ ingredient_drug_classes : "classified_as"
+    drug_classes ||--o{ ingredient_drug_classes : "groups"
     ingredients ||--o{ interactions : "interacts_A"
     ingredients ||--o{ interactions : "interacts_B"
     ingredients ||--o{ contraindications : "contraindicates"
     ingredients ||--o{ beers_rules : "restricted_in"
     ingredients ||--o{ food_interactions : "conflicts_with"
     ingredients ||--o{ timing_rules : "spacing_rule"
+    ingredients ||--o{ dose_limits : "has_limit"
 ```
 
-### Table Definitions
+---
 
-#### `001_initial_schema.sql`
+### Migration 001: Initial Schema & Accounts (`001_initial_schema.sql`)
+
 ```sql
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pg_trgm";
@@ -232,15 +320,27 @@ CREATE TABLE users (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Refresh tokens for rotation and session revocation
+CREATE TABLE refresh_tokens (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    token_hash VARCHAR(255) NOT NULL,
+    expires_at TIMESTAMPTZ NOT NULL,
+    revoked BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- Patient profiles
+-- Controlled vocabulary: allergies stores array of ingredient/class IDs: [{"type":"ingredient","id":12}]
+-- Controlled vocabulary: conditions stores array of fixed uppercase condition codes: ["CKD", "ASTHMA"]
 CREATE TABLE patients (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     caregiver_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL,
     dob DATE NOT NULL,
     weight_kg NUMERIC(5,2),
-    allergies JSONB DEFAULT '[]'::jsonb,      -- Array of strings: ["penicillin", "aspirin"]
-    conditions JSONB DEFAULT '[]'::jsonb,     -- Array of strings: ["hypertension", "ckd"]
+    allergies JSONB DEFAULT '[]'::jsonb,
+    conditions JSONB DEFAULT '[]'::jsonb,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -264,22 +364,44 @@ CREATE TABLE audit_log (
 );
 ```
 
-#### `002_drug_catalog.sql`
+---
+
+### Migration 002: Drug Catalog, Synonyms & Class Hierarchy (`002_drug_catalog.sql`)
+
 ```sql
 -- Standardized active ingredients
 CREATE TABLE ingredients (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL,       -- Normalized lowercase: 'paracetamol'
-    rxcui VARCHAR(50),                       -- RxNorm Identifier (e.g., '161')
-    drug_class VARCHAR(255),                 -- 'NSAID', 'ACE Inhibitor', 'SSRI'
-    max_daily_dose_mg NUMERIC(10,2)          -- e.g., 4000 for paracetamol
+    name VARCHAR(255) UNIQUE NOT NULL,       -- Canonical normalized lowercase: 'paracetamol'
+    rxcui VARCHAR(50)                        -- RxNorm Identifier (e.g., '161')
 );
 
--- Commercial brands (focused on Indian market)
+-- Ingredient alternative synonyms (e.g., acetaminophen -> paracetamol)
+CREATE TABLE ingredient_synonyms (
+    id SERIAL PRIMARY KEY,
+    ingredient_id INT NOT NULL REFERENCES ingredients(id) ON DELETE CASCADE,
+    synonym VARCHAR(255) UNIQUE NOT NULL     -- Lowercase: 'acetaminophen'
+);
+
+-- Pharmacological drug classes (for allergy cross-checks and duplicate therapy)
+CREATE TABLE drug_classes (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,       -- e.g., 'NSAID', 'ACE Inhibitor', 'SSRI'
+    description TEXT
+);
+
+-- Many-to-many relationship: Ingredients to Drug Classes
+CREATE TABLE ingredient_drug_classes (
+    ingredient_id INT NOT NULL REFERENCES ingredients(id) ON DELETE CASCADE,
+    drug_class_id INT NOT NULL REFERENCES drug_classes(id) ON DELETE CASCADE,
+    PRIMARY KEY (ingredient_id, drug_class_id)
+);
+
+-- Commercial brands (loaded via sample seed or Indian brand CSV importer)
 CREATE TABLE brands (
     id SERIAL PRIMARY KEY,
-    brand_name VARCHAR(255) NOT NULL,        -- 'Dolo 650', 'Pan-D'
-    manufacturer VARCHAR(255),               -- 'Micro Labs', 'Alkem'
+    brand_name VARCHAR(255) NOT NULL,        -- e.g., 'Dolo 650', 'Pan-D'
+    manufacturer VARCHAR(255),               -- e.g., 'Micro Labs', 'Alkem'
     form VARCHAR(100),                       -- 'tablet', 'capsule', 'syrup'
     strength_raw VARCHAR(100)                -- '650mg', '40mg/30mg'
 );
@@ -294,44 +416,46 @@ CREATE TABLE brand_ingredients (
 );
 ```
 
-#### `003_safety_rules.sql`
+---
+
+### Migration 003: Safety Rules & Limits (`003_safety_rules.sql`)
+
 ```sql
--- Pairwise drug-drug interactions (DDInter / TWOSIDES)
--- CRITICAL SAFETY RULE: Stored with canonical ordering (ingredient_a < ingredient_b)
+-- Pairwise drug-drug interactions (DDInter / TWOSIDES import)
+-- CRITICAL SAFETY RULE: Enforces canonical integer ordering (ingredient_a < ingredient_b)
+-- Note: 'action' is generated by engine templates in constants.js, not stored as per-row advice.
 CREATE TABLE interactions (
     id SERIAL PRIMARY KEY,
-    ingredient_a VARCHAR(255) NOT NULL,
-    ingredient_b VARCHAR(255) NOT NULL,
+    ingredient_a INT NOT NULL REFERENCES ingredients(id) ON DELETE CASCADE,
+    ingredient_b INT NOT NULL REFERENCES ingredients(id) ON DELETE CASCADE,
     severity VARCHAR(20) NOT NULL,           -- 'major', 'moderate', 'minor'
     summary VARCHAR(500) NOT NULL,
     explanation TEXT NOT NULL,
-    action TEXT NOT NULL,                    -- Clear next step for caregiver
-    source VARCHAR(100) NOT NULL,            -- e.g., 'DDInter v2.0'
+    source VARCHAR(100) NOT NULL,            -- e.g., 'DDInter v2.0' or 'MedGuard sample data (not clinically verified)'
     CONSTRAINT chk_canonical_order CHECK (ingredient_a < ingredient_b),
     UNIQUE(ingredient_a, ingredient_b)
 );
 
--- Timing & spacing conflicts
+-- Administration timing & spacing conflicts
 CREATE TABLE timing_rules (
     id SERIAL PRIMARY KEY,
-    ingredient_a VARCHAR(255) NOT NULL,
-    ingredient_b VARCHAR(255) NOT NULL,
+    ingredient_a INT NOT NULL REFERENCES ingredients(id) ON DELETE CASCADE,
+    ingredient_b INT NOT NULL REFERENCES ingredients(id) ON DELETE CASCADE,
     min_gap_hours NUMERIC(4,1) NOT NULL,     -- e.g., 2.0 or 4.0 hours
     severity VARCHAR(20) DEFAULT 'moderate',
-    advice TEXT NOT NULL,                    -- "Take at least 2 hours apart"
+    advice TEXT NOT NULL,
     source VARCHAR(100) NOT NULL,
     CONSTRAINT chk_timing_order CHECK (ingredient_a < ingredient_b),
     UNIQUE(ingredient_a, ingredient_b)
 );
 
--- Disease-drug contraindications
+-- Disease-drug contraindications using controlled condition codes
 CREATE TABLE contraindications (
     id SERIAL PRIMARY KEY,
     ingredient_id INT NOT NULL REFERENCES ingredients(id) ON DELETE CASCADE,
-    condition VARCHAR(255) NOT NULL,         -- 'ckd', 'heart_failure', 'asthma'
+    condition_code VARCHAR(50) NOT NULL,     -- Controlled: 'CKD', 'HEART_FAILURE', 'ASTHMA'
     severity VARCHAR(20) NOT NULL,           -- 'major', 'moderate'
     description TEXT NOT NULL,
-    action TEXT NOT NULL,
     source VARCHAR(100) NOT NULL
 );
 
@@ -352,21 +476,38 @@ CREATE TABLE food_interactions (
     item VARCHAR(100) NOT NULL,              -- 'alcohol', 'grapefruit', 'dairy'
     severity VARCHAR(20) NOT NULL,           -- 'major', 'moderate', 'minor'
     description TEXT NOT NULL,
-    action TEXT NOT NULL,
+    source VARCHAR(100) NOT NULL
+);
+
+-- Age-adjusted maximum daily dose limits
+CREATE TABLE dose_limits (
+    id SERIAL PRIMARY KEY,
+    ingredient_id INT NOT NULL REFERENCES ingredients(id) ON DELETE CASCADE,
+    age_min INT DEFAULT 0,
+    age_max INT DEFAULT 150,
+    max_daily_dose_mg NUMERIC(10,2) NOT NULL,
+    unit VARCHAR(20) DEFAULT 'mg',
+    rationale TEXT,
     source VARCHAR(100) NOT NULL
 );
 ```
 
-#### `004_patient_records.sql`
+---
+
+### Migration 004: Patient Medicines & Records (`004_patient_records.sql`)
+
 ```sql
 -- Active medicines recorded for a patient
 CREATE TABLE patient_medicines (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     patient_id UUID NOT NULL REFERENCES patients(id) ON DELETE CASCADE,
     brand_id INT REFERENCES brands(id) ON DELETE SET NULL,
-    custom_name VARCHAR(255),                -- Used when brand is entered manually
-    dose VARCHAR(100),                       -- e.g., '1 tablet'
-    frequency VARCHAR(100),                  -- 'twice daily', 'with breakfast'
+    custom_name VARCHAR(255),
+    dose_amount NUMERIC(8,2),                -- e.g., 1 or 500
+    dose_unit VARCHAR(50),                   -- e.g., 'tablet', 'mg', 'ml'
+    doses_per_day INT NOT NULL DEFAULT 1,    -- e.g., 1, 2, 3
+    is_prn BOOLEAN DEFAULT FALSE,            -- TRUE = as-needed medicine (dose total bypassed)
+    frequency_text VARCHAR(100),             -- 'twice daily with food'
     timing_schedule JSONB DEFAULT '[]'::jsonb, -- e.g., ["08:00", "20:00"]
     start_date DATE,
     end_date DATE,
@@ -378,12 +519,12 @@ CREATE TABLE patient_medicines (
 CREATE TABLE scan_history (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     patient_id UUID NOT NULL REFERENCES patients(id) ON DELETE CASCADE,
-    matched_drugs JSONB NOT NULL,            -- Detected medicines and match status
-    confidence NUMERIC(4,2),                 -- Average confidence (0.0 to 1.0)
+    matched_drugs JSONB NOT NULL,            -- Detected medicines and match confidence
+    confidence NUMERIC(4,2),                 -- Average confidence score (0.0 to 1.0)
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Schedule reminders and adherence
+-- Reminders & adherence (Backend deferred in v1; schema established for future migration)
 CREATE TABLE reminders (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     patient_medicine_id UUID NOT NULL REFERENCES patient_medicines(id) ON DELETE CASCADE,
@@ -399,34 +540,102 @@ CREATE TABLE adherence_log (
 );
 ```
 
-#### `005_indexes_and_rls.sql`
+---
+
+### Migration 005: Indexes & Defense-in-Depth RLS (`005_indexes_and_rls.sql`)
+
 ```sql
 -- Indexes for rapid lookups and fuzzy autocomplete
 CREATE INDEX idx_brands_name_trgm ON brands USING gin (lower(brand_name) gin_trgm_ops);
 CREATE INDEX idx_ingredients_name ON ingredients (lower(name));
+CREATE INDEX idx_ingredient_synonyms_name ON ingredient_synonyms (lower(synonym));
 CREATE INDEX idx_interactions_lookup ON interactions (ingredient_a, ingredient_b);
 CREATE INDEX idx_timing_lookup ON timing_rules (ingredient_a, ingredient_b);
 CREATE INDEX idx_patient_medicines_active ON patient_medicines (patient_id) WHERE active = TRUE;
+CREATE INDEX idx_refresh_tokens_user ON refresh_tokens (user_id);
 
--- Row Level Security (RLS)
+-- ROW LEVEL SECURITY (RLS) - SECOND-LAYER DEFENSE
+-- Primary protection: API-level query filtering (WHERE caregiver_id = current_user_id)
+-- Second-layer protection: Database RLS enforced on checked-out pool connections
+-- Pool connects as unprivileged role: medguard_app_user (non-owner, non-superuser)
+-- Each transaction executes: SET LOCAL app.current_user_id = '<authenticated_uuid>';
+
 ALTER TABLE patients ENABLE ROW LEVEL SECURITY;
 ALTER TABLE patient_medicines ENABLE ROW LEVEL SECURITY;
 ALTER TABLE scan_history ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reminders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE adherence_log ENABLE ROW LEVEL SECURITY;
 
--- Caregiver isolation policy
-CREATE POLICY caregiver_patients_policy ON patients
-    FOR ALL
-    USING (caregiver_id = auth.uid() OR id IN (
-        SELECT patient_id FROM caregiver_access WHERE user_id = auth.uid()
-    ));
+-- Enforce RLS even for table owners/service accounts
+ALTER TABLE patients FORCE ROW LEVEL SECURITY;
+ALTER TABLE patient_medicines FORCE ROW LEVEL SECURITY;
+ALTER TABLE scan_history FORCE ROW LEVEL SECURITY;
+ALTER TABLE reminders FORCE ROW LEVEL SECURITY;
+ALTER TABLE adherence_log FORCE ROW LEVEL SECURITY;
 
-CREATE POLICY caregiver_medicines_policy ON patient_medicines
+-- Helper function to extract the session-scoped user ID
+CREATE OR REPLACE FUNCTION get_current_user_id() RETURNS UUID AS $$
+BEGIN
+    RETURN NULLIF(current_setting('app.current_user_id', true), '')::UUID;
+EXCEPTION
+    WHEN OTHERS THEN RETURN NULL;
+END;
+$$ LANGUAGE plpgsql STABLE;
+
+-- RLS Policy: Patients table (Caregiver owner or granted delegate)
+CREATE POLICY rls_patients_policy ON patients
     FOR ALL
-    USING (patient_id IN (
-        SELECT id FROM patients WHERE caregiver_id = auth.uid()
-    ));
+    USING (
+        caregiver_id = get_current_user_id() 
+        OR id IN (SELECT patient_id FROM caregiver_access WHERE user_id = get_current_user_id())
+    );
+
+-- RLS Policy: Patient Medicines table (Consistent with caregiver_access)
+CREATE POLICY rls_patient_medicines_policy ON patient_medicines
+    FOR ALL
+    USING (
+        patient_id IN (
+            SELECT id FROM patients 
+            WHERE caregiver_id = get_current_user_id()
+               OR id IN (SELECT patient_id FROM caregiver_access WHERE user_id = get_current_user_id())
+        )
+    );
+
+-- RLS Policy: Scan History table (Consistent with caregiver_access)
+CREATE POLICY rls_scan_history_policy ON scan_history
+    FOR ALL
+    USING (
+        patient_id IN (
+            SELECT id FROM patients 
+            WHERE caregiver_id = get_current_user_id()
+               OR id IN (SELECT patient_id FROM caregiver_access WHERE user_id = get_current_user_id())
+        )
+    );
+
+-- RLS Policy: Reminders table (Consistent with caregiver_access)
+CREATE POLICY rls_reminders_policy ON reminders
+    FOR ALL
+    USING (
+        patient_medicine_id IN (
+            SELECT pm.id FROM patient_medicines pm
+            JOIN patients p ON pm.patient_id = p.id
+            WHERE p.caregiver_id = get_current_user_id()
+               OR p.id IN (SELECT patient_id FROM caregiver_access WHERE user_id = get_current_user_id())
+        )
+    );
+
+-- RLS Policy: Adherence Log table (Consistent with caregiver_access)
+CREATE POLICY rls_adherence_log_policy ON adherence_log
+    FOR ALL
+    USING (
+        reminder_id IN (
+            SELECT r.id FROM reminders r
+            JOIN patient_medicines pm ON r.patient_medicine_id = pm.id
+            JOIN patients p ON pm.patient_id = p.id
+            WHERE p.caregiver_id = get_current_user_id()
+               OR p.id IN (SELECT patient_id FROM caregiver_access WHERE user_id = get_current_user_id())
+        )
+    );
 ```
 
 ---
@@ -435,12 +644,12 @@ CREATE POLICY caregiver_medicines_policy ON patient_medicines
 
 All endpoints run on Express, require `Content-Type: application/json`, and return consistent envelope responses. Endpoints marked 🔒 require `Authorization: Bearer <accessToken>`.
 
-### Error Response Schema
+### Error Response Envelope
 ```json
 {
   "success": false,
   "error": {
-    "code": "VALIDATION_ERROR | UNAUTHORIZED | NOT_FOUND | RATE_LIMITED | INTERNAL_ERROR",
+    "code": "VALIDATION_ERROR | UNAUTHORIZED | FORBIDDEN | NOT_FOUND | RATE_LIMITED | INTERNAL_ERROR",
     "message": "Human-friendly explanation of the issue."
   }
 }
@@ -451,134 +660,41 @@ All endpoints run on Express, require `Content-Type: application/json`, and retu
 ### Auth Endpoints
 
 #### 1. `POST /api/auth/register`
-Creates a caregiver account.
-* **Request Body:**
-```json
-{
-  "name": "Priya Sharma",
-  "email": "priya.sharma@example.com",
-  "password": "StrongPassword123!",
-  "language": "en"
-}
-```
-* **Success Response (201 Created):**
-```json
-{
-  "success": true,
-  "data": {
-    "user": {
-      "id": "c7a8b41e-3f62-4299-9b9c-29b67484dfb1",
-      "name": "Priya Sharma",
-      "email": "priya.sharma@example.com",
-      "language": "en"
-    },
-    "tokens": {
-      "accessToken": "eyJhbGciOi...",
-      "refreshToken": "d82f48ab..."
-    }
-  }
-}
-```
+* **Request Body:** `{ "name": "Priya Sharma", "email": "priya.sharma@example.com", "password": "StrongPassword123!", "language": "en" }`
+* **Success Response (201 Created):** `{ "success": true, "data": { "user": { "id": "...", "name": "Priya Sharma" }, "tokens": { "accessToken": "...", "refreshToken": "..." } } }`
 
 #### 2. `POST /api/auth/login`
 Rate limited: 5 attempts per 15 minutes per IP.
-* **Request Body:**
-```json
-{
-  "email": "priya.sharma@example.com",
-  "password": "StrongPassword123!"
-}
-```
-* **Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "data": {
-    "user": {
-      "id": "c7a8b41e-3f62-4299-9b9c-29b67484dfb1",
-      "name": "Priya Sharma",
-      "email": "priya.sharma@example.com",
-      "language": "en"
-    },
-    "tokens": {
-      "accessToken": "eyJhbGciOi...",
-      "refreshToken": "d82f48ab..."
-    }
-  }
-}
-```
+* **Request Body:** `{ "email": "priya.sharma@example.com", "password": "StrongPassword123!" }`
+* **Success Response (200 OK):** `{ "success": true, "data": { "user": { "id": "..." }, "tokens": { "accessToken": "...", "refreshToken": "..." } } }`
 
 #### 3. `POST /api/auth/refresh`
 Rotates the refresh token and returns a new access token.
-* **Request Body:**
-```json
-{
-  "refreshToken": "d82f48ab..."
-}
-```
-* **Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "data": {
-    "accessToken": "eyJhbGciOi...",
-    "refreshToken": "new_refresh_token_string"
-  }
-}
-```
+* **Request Body:** `{ "refreshToken": "d82f48ab..." }`
+* **Success Response (200 OK):** `{ "success": true, "data": { "accessToken": "...", "refreshToken": "..." } }`
 
 #### 4. `POST /api/auth/logout` 🔒
-Invalidates the current refresh token.
-* **Request Body:** `{ "refreshToken": "..." }`
+Revokes the refresh token.
+* **Request Body:** `{ "refreshToken": "d82f48ab..." }`
 * **Success Response (200 OK):** `{ "success": true, "message": "Logged out successfully" }`
+
+#### 5. `DELETE /api/auth/account` 🔒
+Deletes the caregiver account and cascades deletion of all associated patient data.
+* **Request Body:** `{ "password": "StrongPassword123!" }`
+* **Success Response (200 OK):** `{ "success": true, "message": "Account and all associated patient records permanently deleted" }`
 
 ---
 
-### Medicine Catalog Endpoints
+### Medicine Catalog & Normalization Endpoints
 
-#### 5. `GET /api/medicines/search?q={query}` 🔒
+#### 6. `GET /api/medicines/search?q={query}` 🔒
 Autocomplete search for brands and generic ingredients.
 * **Query Params:** `q` (minimum 2 chars, e.g., `dolo` or `crocin`)
-* **Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 104,
-      "type": "brand",
-      "name": "Dolo 650",
-      "manufacturer": "Micro Labs",
-      "form": "tablet",
-      "strength": "650mg",
-      "ingredients": [
-        { "name": "paracetamol", "strengthMg": 650 }
-      ]
-    },
-    {
-      "id": 218,
-      "type": "brand",
-      "name": "Pan-D",
-      "manufacturer": "Alkem",
-      "form": "capsule",
-      "strength": "40mg/30mg",
-      "ingredients": [
-        { "name": "pantoprazole", "strengthMg": 40 },
-        { "name": "domperidone", "strengthMg": 30 }
-      ]
-    }
-  ]
-}
-```
+* **Success Response (200 OK):** `{ "success": true, "data": [{ "id": 104, "name": "Dolo 650", "manufacturer": "Micro Labs", "strength": "650mg" }] }`
 
-#### 6. `POST /api/medicines/normalize` 🔒
-Takes messy brand names or OCR strings and maps them to normalized ingredients.
-* **Request Body:**
-```json
-{
-  "queries": ["Dolo 650", "Pan-D tablet", "UnknownStripX 10mg"]
-}
-```
+#### 7. `POST /api/medicines/normalize` 🔒
+**Exclusively handles messy raw brand names or OCR strings** before presenting the confirmed list to the caregiver.
+* **Request Body:** `{ "queries": ["Dolo 650", "Pan-D", "UnknownStripX"] }`
 * **Success Response (200 OK):**
 ```json
 {
@@ -589,24 +705,22 @@ Takes messy brand names or OCR strings and maps them to normalized ingredients.
         "query": "Dolo 650",
         "brandId": 104,
         "brandName": "Dolo 650",
-        "ingredients": [
-          { "name": "paracetamol", "rxcui": "161", "drugClass": "Analgesic", "strengthMg": 650 }
-        ]
+        "ingredients": [{ "id": 1, "name": "paracetamol", "strengthMg": 650 }]
       },
       {
-        "query": "Pan-D tablet",
+        "query": "Pan-D",
         "brandId": 218,
         "brandName": "Pan-D",
         "ingredients": [
-          { "name": "pantoprazole", "rxcui": "40790", "drugClass": "PPI", "strengthMg": 40 },
-          { "name": "domperidone", "rxcui": "3587", "drugClass": "Antiemetic", "strengthMg": 30 }
+          { "id": 12, "name": "pantoprazole", "strengthMg": 40 },
+          { "id": 15, "name": "domperidone", "strengthMg": 30 }
         ]
       }
     ],
     "unresolved": [
       {
-        "query": "UnknownStripX 10mg",
-        "reason": "Not found in local brand catalog or RxNorm"
+        "query": "UnknownStripX",
+        "reason": "Not found in local brand catalog"
       }
     ]
   }
@@ -617,39 +731,40 @@ Takes messy brand names or OCR strings and maps them to normalized ingredients.
 
 ### Core Safety Engine Endpoint
 
-#### 7. `POST /api/check` 🔒
-Rate limited: 30 requests per minute. Evaluates confirmed medicines against the patient's profile.
+#### 8. `POST /api/check` 🔒
+Rate limited: 30 requests per minute.
+**STRICT INPUT BOUNDARY:** Accepts confirmed `brandId` integers and an `unrecognized` array only. Raw strings never enter `/api/check`.
 * **Request Body:**
 ```json
 {
   "patientId": "8a32b214-41d1-42aa-91e0-bc4f285d8e20",
   "confirmedMedicines": [
     {
-      "brandName": "Warfarin 5mg",
-      "ingredients": [{ "name": "warfarin", "strengthMg": 5 }],
-      "dose": "1 tablet",
-      "frequency": "once daily evening"
+      "brandId": 104,
+      "doseAmount": 1,
+      "doseUnit": "tablet",
+      "dosesPerDay": 3,
+      "isPrn": false,
+      "frequencyText": "three times daily"
     },
     {
-      "brandName": "Disprin",
-      "ingredients": [{ "name": "aspirin", "strengthMg": 325 }],
-      "dose": "1 tablet",
-      "frequency": "as needed"
+      "brandId": 52,
+      "doseAmount": 1,
+      "doseUnit": "tablet",
+      "dosesPerDay": 1,
+      "isPrn": false,
+      "frequencyText": "once daily evening"
     },
     {
-      "brandName": "Dolo 650",
-      "ingredients": [{ "name": "paracetamol", "strengthMg": 650 }],
-      "dose": "1 tablet",
-      "frequency": "three times daily"
-    },
-    {
-      "brandName": "Crocin 500",
-      "ingredients": [{ "name": "paracetamol", "strengthMg": 500 }],
-      "dose": "1 tablet",
-      "frequency": "twice daily"
+      "brandId": 77,
+      "doseAmount": 1,
+      "doseUnit": "tablet",
+      "dosesPerDay": 1,
+      "isPrn": true,
+      "frequencyText": "as needed"
     }
   ],
-  "unrecognized": ["HerbalChurnaPacket"]
+  "unrecognized": ["UnknownHerbalPacket"]
 }
 ```
 * **Success Response (200 OK):**
@@ -659,37 +774,27 @@ Rate limited: 30 requests per minute. Evaluates confirmed medicines against the 
   "data": {
     "summary": {
       "overallStatus": "major",
-      "totalFindings": 2,
+      "totalFindings": 1,
       "majorCount": 1,
       "moderateCount": 0,
       "minorCount": 0,
-      "duplicateCount": 1,
       "unrecognizedCount": 1
     },
     "findings": [
       {
         "type": "interaction",
         "severity": "major",
-        "items": ["warfarin", "aspirin"],
+        "items": ["Warfarin 5mg", "Disprin"],
         "summary": "Combining Warfarin and Aspirin greatly increases the risk of serious bleeding.",
         "explanation": "Warfarin slows down blood clotting, and Aspirin stops platelets from sticking together. Taking both multiplies the risk of stomach ulcers and internal bleeding.",
-        "action": "Contact the patient's doctor or cardiologist today before giving these together. Do not stop prescribed medicines without advice.",
+        "action": "Contact the patient's doctor or pharmacist today before giving these medicines together. Do not alter prescribed doses without professional guidance.",
         "source": "DDInter v2.0"
-      },
-      {
-        "type": "duplicate",
-        "severity": "major",
-        "items": ["Dolo 650", "Crocin 500"],
-        "summary": "Duplicate active ingredient: both medicines contain Paracetamol.",
-        "explanation": "Dolo 650 and Crocin 500 both contain Paracetamol. Taking both leads to a total daily intake of 2950mg, increasing the risk of accidental liver damage.",
-        "action": "Do not give both at the same time. Check with the doctor or pharmacist to pick one brand.",
-        "source": "MedGuard Formulation Database"
       }
     ],
     "unrecognized": [
       {
-        "input": "HerbalChurnaPacket",
-        "reason": "Could not identify active ingredients in catalog. Please show this packaging to a pharmacist."
+        "input": "UnknownHerbalPacket",
+        "reason": "Could not identify active ingredients in catalog. Please show this packaging to a doctor or pharmacist."
       }
     ],
     "disclaimer": "MedGuard is an informational screening tool. It does not provide medical advice, diagnosis or treatment, and it does not replace consultation with a doctor or pharmacist. Never start, stop or change a medicine without professional guidance."
@@ -701,291 +806,250 @@ Rate limited: 30 requests per minute. Evaluates confirmed medicines against the 
 
 ### Patient & Medicine Records Endpoints
 
-#### 8. `GET /api/patients` 🔒
+#### 9. `GET /api/patients` 🔒
 Returns all patient profiles managed by the caregiver.
-* **Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": "8a32b214-41d1-42aa-91e0-bc4f285d8e20",
-      "name": "Ramesh Sharma",
-      "dob": "1954-04-12",
-      "age": 72,
-      "weightKg": 68.5,
-      "allergies": ["penicillin"],
-      "conditions": ["hypertension", "type 2 diabetes"],
-      "activeMedicineCount": 5
-    }
-  ]
-}
-```
 
-#### 9. `POST /api/patients` 🔒
-Creates a new patient profile.
+#### 10. `POST /api/patients` 🔒
+Creates a new patient profile using controlled vocabularies.
 * **Request Body:**
 ```json
 {
-  "name": "Saraswathi Devi",
-  "dob": "1951-08-15",
-  "weightKg": 58.0,
-  "allergies": ["sulfa"],
-  "conditions": ["ckd", "hypertension"]
-}
-```
-* **Success Response (201 Created):** `{ "success": true, "data": { "id": "...", "name": "..." } }`
-
-#### 10. `GET /api/patients/:id/medicines` 🔒
-Retrieves all current active medicines for a specific patient.
-* **Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": "90e1f72a-112e-4b77-a123-281b378c7711",
-      "brandName": "Telma 40",
-      "ingredients": [{ "name": "telmisartan", "strengthMg": 40 }],
-      "dose": "1 tablet",
-      "frequency": "morning after food",
-      "timingSchedule": ["08:30"],
-      "startDate": "2024-01-15",
-      "active": true
-    }
-  ]
+  "name": "Ramesh Sharma",
+  "dob": "1954-04-12",
+  "weightKg": 68.5,
+  "allergies": [{"type": "class", "id": 4}],
+  "conditions": ["CKD", "HYPERTENSION"]
 }
 ```
 
-#### 11. `POST /api/patients/:id/medicines` 🔒
-Saves a list of confirmed medicines to the patient's active medication record.
-* **Request Body:**
-```json
-{
-  "medicines": [
-    {
-      "brandId": 104,
-      "customName": "Dolo 650",
-      "dose": "1 tablet",
-      "frequency": "as needed",
-      "timingSchedule": ["14:00"]
-    }
-  ]
-}
-```
-* **Success Response (201 Created):** `{ "success": true, "count": 1 }`
+#### 11. `PUT /api/patients/:id` 🔒
+Edits an existing patient profile.
 
-#### 12. `GET /api/patients/:id/report.pdf` 🔒
-Generates and streams a clean, doctor-ready one-page PDF report.
-* **Response Headers:** `Content-Type: application/pdf`, `Content-Disposition: attachment; filename="MedGuard-Report-RameshSharma.pdf"`
+#### 12. `DELETE /api/patients/:id` 🔒
+Permanently deletes a patient profile and associated medicine records.
+
+#### 13. `GET /api/patients/:id/medicines` 🔒
+Retrieves active medicines for a patient.
+
+#### 14. `POST /api/patients/:id/medicines` 🔒
+Saves confirmed medicines to the patient's record.
+
+#### 15. `DELETE /api/patients/:id/medicines/:medId` 🔒
+Removes a medicine from the patient's active list.
+
+#### 16. `GET /api/patients/:id/report.pdf` 🔒
+Generates and streams a doctor-ready one-page PDF report.
 
 ---
 
 ## 5. Safety-Engine Module Design
 
-The engine is built with **pure, exported functions**. Given identical inputs, it always yields identical outputs. It executes zero network calls and zero database queries during the check phase—relying exclusively on in-memory rule sets or pre-fetched tables.
+The safety engine is built exclusively with **pure, exported functions**. Given identical inputs, it always yields identical outputs. It executes zero network calls and zero database queries during check execution.
+
+### Architectural Workflow
 
 ```mermaid
 flowchart TD
-    Input["Input: Confirmed Medicines + Patient Profile"] --> Step1["1. Normalizer\n(Expand brands to ingredients & combinations)"]
-    Step1 --> Step2["2. Duplicate Checker\n(Same ingredient & drug class)"]
-    Step2 --> Step3["3. Pair Interaction Checker\n(Canonical A < B lookup)"]
-    Step3 --> Step4["4. Timing & Spacing Checker\n(Minimum gap rules)"]
-    Step4 --> Step5["5. Allergy Cross-Checker\n(Ingredient & drug-class matches)"]
-    Step5 --> Step6["6. Contraindication Checker\n(Condition vs. drug risks)"]
-    Step6 --> Step7["7. Beers Criteria Checker\n(Geriatric high-risk flags if age ≥ 65)"]
-    Step7 --> Step8["8. Food & Alcohol Checker\n(Grapefruit, alcohol, dairy)"]
-    Step8 --> Step9["9. Daily Max Dose Checker\n(Cumulative ingredient totals)"]
+    API["API Layer\n(Queries only rules for requested ingredient IDs)"] --> PureInput["Scoped Rules + Confirmed Medicines + Patient Profile"]
+    PureInput --> Step1["1. Duplicate Checker\n(Same Ingredient & Pharmacological Class)"]
+    Step1 --> Step2["2. Pair Interaction Checker\n(Canonical Integer ID Lookup: A < B)"]
+    Step2 --> Step3["3. Timing & Spacing Checker\n(Minimum Gap Rule Evaluation)"]
+    Step3 --> Step4["4. Allergy Cross-Checker\n(Controlled Ingredient & Class Cross-Sensitivities)"]
+    Step4 --> Step5["5. Contraindication Checker\n(Controlled Condition Codes vs. Drug Contraindications)"]
+    Step5 --> Step6["6. Beers Criteria Checker\n(Geriatric Evaluation if Age ≥ 65)"]
+    Step6 --> Step7["7. Food & Alcohol Checker\n(Grapefruit, Alcohol, Dairy Conflicts)"]
+    Step7 --> Step8["8. Daily Max Dose Checker\n(Age-Adjusted Limits; Bypasses PRN with explicit notice)"]
+    Step8 --> Step9["9. Action Template Formatter\n(Applies constants.js templates based on severity tier)"]
     Step9 --> Output["Aggregated Report\n(Sorted by Severity: Major > Moderate > Minor)"]
 ```
 
 ### Module Responsibilities
 
-1. **`normalizer.js` (`normalize(medicines, brandCatalog)`)**
-   - Resolves brand names to standardized ingredient names and milligram strengths.
-   - Automatically splits combination drugs (e.g., `Pan-D` becomes `pantoprazole 40mg` + `domperidone 30mg`).
-   - Unrecognized items are passed to the `unrecognized` array—never dropped silently.
-
-2. **`duplicateChecker.js` (`checkDuplicates(normalizedMedicines)`)**
-   - Flags when two or more distinct brands contain the exact same active ingredient (e.g., `Crocin` + `Dolo 650`).
-   - Flags pharmacological class duplication (e.g., taking two NSAIDs: `ibuprofen` + `diclofenac`).
-
-3. **`interactionChecker.js` (`checkInteractions(ingredientsList, interactionDb)`)**
-   - Evaluates all unique pairwise pairs: $N \times (N - 1) / 2$.
-   - Enforces canonical ordering: pairs are checked as `[min(A, B), max(A, B)]` against the index.
-   - Assigns severity: `major`, `moderate`, `minor`.
-
-4. **`timingChecker.js` (`checkTiming(normalizedMedicines, timingRules)`)**
-   - Detects administration timing conflicts (e.g., fluoroquinolones/tetracyclines taken with calcium/antacids without a 2-4 hour buffer).
-
-5. **`allergyChecker.js` (`checkAllergies(patientAllergies, ingredientsList)`)**
-   - Matches known patient allergies against active ingredients and chemical classes (e.g., Penicillin allergy vs `amoxicillin`).
-
-6. **`contraindicationChecker.js` (`checkContraindications(patientConditions, ingredientsList, contraindicationDb)`)**
-   - Cross-references chronic conditions (e.g., Chronic Kidney Disease, Peptic Ulcer Disease, Asthma) with medications that worsen them (e.g., NSAIDs, non-selective beta-blockers).
-
-7. **`beersChecker.js` (`checkBeers(patientAge, ingredientsList, beersRules)`)**
-   - Only triggers if `patientAge >= 65`.
-   - Identifies drugs on the AGS Beers list (e.g., long-acting benzodiazepines, anticholinergics like diphenhydramine, sliding scale insulin).
-
-8. **`foodChecker.js` (`checkFood(ingredientsList, foodRules)`)**
-   - Identifies critical dietary interactions (e.g., grapefruit juice with statins, alcohol with metronidazole, tyramine foods with MAOIs).
-
-9. **`doseChecker.js` (`checkMaxDose(normalizedMedicines, doseLimits)`)**
-   - Calculates the sum of all daily doses for each active ingredient.
-   - Flags an alert if cumulative daily intake exceeds safe thresholds (e.g., total paracetamol > 4,000 mg/day).
-
-10. **`index.js` (`runAllChecks(patient, confirmedMedicines, dbTables)`)**
-    - Orchestrates the sequence 1 through 9.
-    - Assembles the standardized finding schema from PRD Section 8.
-    - If zero findings exist, outputs `severity: "info"` with the exact message: *"No known interaction found in our data."* (Never "safe").
+1. **Targeted Rule Ingestion:** The Express API queries only the rules needed for the active ingredient IDs in the request and injects this scoped subset into `runAllChecks()`.
+2. **`normalizer.js` (`normalize(rawMedicines, brandCatalog, synonymTable)`)**
+   - Resolves brand IDs or text to integer ingredient IDs. Uses `ingredient_synonyms` to map alternative chemical names.
+   - Automatically splits combination drugs.
+3. **`duplicateChecker.js` (`checkDuplicates(normalizedMedicines, drugClasses)`)**
+   - Detects duplicate active ingredients and duplicate pharmacological classes.
+4. **`interactionChecker.js` (`checkInteractions(ingredientsList, scopedInteractions)`)**
+   - Checks pairwise combinations $N \times (N - 1) / 2$ with canonical integer order (`A < B`).
+5. **`timingChecker.js` (`checkTiming(normalizedMedicines, scopedTimingRules)`)**
+   - Evaluates administration interval spacing.
+6. **`allergyChecker.js` (`checkAllergies(patientAllergies, ingredientsList, classHierarchy)`)**
+   - Matches controlled allergy entries (ingredient IDs / class IDs) against active ingredients.
+7. **`contraindicationChecker.js` (`checkContraindications(patientConditions, ingredientsList, scopedContraindications)`)**
+   - Cross-references controlled condition codes (e.g., `CKD`) against drug contraindications.
+8. **`beersChecker.js` (`checkBeers(patientAge, ingredientsList, scopedBeersRules)`)**
+   - Flags medications on the AGS Beers Criteria list for patients aged 65 and older.
+9. **`foodChecker.js` (`checkFood(ingredientsList, scopedFoodRules)`)**
+   - Evaluates dietary and alcohol conflicts.
+10. **`doseChecker.js` (`checkMaxDose(patientAge, normalizedMedicines, scopedDoseLimits)`)**
+    - Checks cumulative 24-hour milligram dose against age-adjusted limits.
+    - **For as-needed medicines (`is_prn = true`):** Outputs `"Cannot calculate daily total for as-needed (PRN) medicine"` instead of guessing.
+11. **Action Text Formatting via `constants.js`:**
+    - Caregiver actions are generated **strictly from severity-based templates** defined in `constants.js`:
+      - **Major:** *"Contact the patient's doctor or pharmacist today before giving these medicines together. Do not alter prescribed doses without professional guidance."*
+      - **Moderate:** *"Discuss this combination with the patient's doctor or pharmacist at the next appointment. Monitor the patient for symptoms."*
+      - **Minor:** *"Be aware of this combination and monitor the patient. Mention it to the pharmacist during your next refill."*
+      - **Info / Clear:** *"No known interaction found in our data. Always verify all medicines with a doctor or pharmacist."*
+    - Actions are never free-form text in data tables and are never generated by an LLM.
 
 ---
 
-## 6. Ordered Task List & Ownership
+## 6. Phased Implementation Roadmap & Ownership
 
-Each task has clear folder ownership, deliverables, and dependencies.
+Tasks are organized strictly in sequential dependency order.
 
 ```mermaid
 graph TD
-    T1["Phase 1: Architecture & Master Plan\n(Lead Engineer - Approved)"] --> T2["Phase 2: Database & Safety Engine\n(Engine Agent - /db, /scripts, /server/engine)"]
-    T2 --> T3["Phase 3: REST API & Auth\n(API Agent - /server/routes, /middleware, /auth)"]
-    T1 --> T4A["Phase 4a: Desktop Frontend UI\n(Frontend Agent - /client desktop)"]
-    T4A --> T4B["Phase 4b: Mobile Responsive & PWA\n(Frontend Agent - /client mobile)"]
-    T1 --> T5["Phase 5: On-Device OCR Pipeline\n(OCR Agent - /client/src/ocr)"]
-    T3 --> T6["Phase 6: Integration & Verification\n(Integration Agent - End-to-End)"]
-    T4B --> T6
-    T5 --> T6
+    P1["Phase 1: Architecture & Planning\n(Human Approval)"] --> P2["Phase 2: Data & Safety Engine\n(Engine Agent: /db, /scripts, /server/engine)"]
+    P2 --> P3["Phase 3: REST API & Auth\n(API Agent: /server/routes, /middleware, /auth, server files)"]
+    P3 --> P4["Phase 4: Frontend Desktop UI\n(Frontend Agent: /client desktop screens & mock API)"]
+    P4 --> P5["Phase 5: Desktop Integration\n(Integration Agent: /client/src/api live connection & E2E)"]
+    P5 --> P6["Phase 6: On-Device OCR Pipeline\n(OCR Agent: /client/src/ocr)"]
+    P6 --> P7["Phase 7: Mobile Layout & PWA\n(Frontend Agent: /client mobile responsive, PWA worker)"]
+    P7 --> P8["Phase 8: Final Integration\n(Integration Agent: OCR to Confirm hook & complete audit)"]
 ```
 
-### Detailed Task Breakdown
+### Detailed Task Table
 
-| Task # | Task Description | Folder / File Scope | Dependencies | Owner |
+| Phase | Task Description | Scope / Folders Owned | Dependencies | Owner |
 |---|---|---|---|---|
-| **1.0** | Master Plan approval and repository alignment | `/docs`, `AGENTS.md`, `PRD.md` | None | Human & Lead Engineer |
-| **2.1** | Write SQL migrations (tables, foreign keys, indexes, RLS) | `/db/migrations/*.sql`, `/scripts/migrate.js` | 1.0 | Engine Agent |
-| **2.2** | Build database seeders and dataset import scripts | `/scripts/seed.js`, `/db/seeds/*.json` | 2.1 | Engine Agent |
-| **2.3** | Implement deterministic safety engine functions | `/server/engine/*.js` | 2.2 | Engine Agent |
-| **2.4** | Implement unit tests and 32-pair golden test suite | `/server/engine/tests/*` | 2.3 | Engine Agent |
-| **3.1** | Express structure, config validation, DB connection pool | `/server/server.js`, `/server/config.js` | 2.2 | API Agent |
-| **3.2** | Authentication module (bcrypt, JWT issuance, refresh rotation) | `/server/auth/*`, `/server/middleware/authenticate.js` | 3.1 | API Agent |
-| **3.3** | REST endpoints (search, normalize, check, patients, medicines) | `/server/routes/*`, `/server/middleware/rateLimiter.js` | 2.3, 3.2 | API Agent |
-| **3.4** | Input validation, error handling, and API integration tests | `/server/middleware/errorHandler.js`, `/server/tests/*` | 3.3 | API Agent |
-| **4a.1**| Client scaffold (Vite + React + Tailwind + Noto Sans tokens) | `/client/package.json`, `/client/tailwind.config.js` | 1.0 | Frontend Agent |
-| **4a.2**| Reusable design system components (Button, Card, SeverityBadge) | `/client/src/components/common/*` | 4a.1 | Frontend Agent |
-| **4a.3**| Desktop layout shell (Sidebar, TopBar, Language, Text-size toggle)| `/client/src/components/layout/*` | 4a.2 | Frontend Agent |
-| **4a.4**| Desktop screens (Dashboard, Patient Detail, Confirm, Report) | `/client/src/pages/*`, `/client/src/mocks/*` | 4a.3 | Frontend Agent |
-| **4a.5**| Print stylesheet for clean 1-page A4 doctor-ready PDF | `/client/src/pages/SafetyReportPage.jsx` | 4a.4 | Frontend Agent |
-| **4b.1**| Mobile responsive layouts & 4-tab bottom navigation bar | `/client/src/components/layout/BottomNav.jsx` | 4a.4 | Frontend Agent |
-| **4b.2**| Mobile touch targets (48px), bottom sheets, vertical card stack| `/client/src/pages/*` (mobile responsive) | 4b.1 | Frontend Agent |
-| **4b.3**| Mobile camera scan interface with guide frame & privacy banner | `/client/src/pages/ScanPage.jsx` | 4b.2 | Frontend Agent |
-| **4b.4**| PWA manifest, service worker for app shell offline caching | `/client/public/manifest.webmanifest` | 4b.3 | Frontend Agent |
-| **5.1** | Canvas image pre-processing (grayscale, contrast, threshold, deskew)| `/client/src/ocr/imagePreprocessor.js` | 1.0 | OCR Agent |
-| **5.2** | Tesseract.js Web Worker runner | `/client/src/ocr/ocrWorker.js` | 5.1 | OCR Agent |
-| **5.3** | Heuristic candidate parser (filters batch numbers, dates, prices) | `/client/src/ocr/candidateExtractor.js` | 5.2 | OCR Agent |
-| **5.4** | Fuse.js fuzzy matcher with confidence scoring | `/client/src/ocr/fuzzyMatcher.js`, `/client/src/ocr/index.js`| 5.3 | OCR Agent |
-| **5.5** | OCR accuracy evaluation on `/test-assets` | `/client/src/ocr/tests/evaluate-ocr.js` | 5.4 | OCR Agent |
-| **6.1** | Connect frontend API layer (`/client/src/api`) to live Express API | `/client/src/api/*` | 3.4, 4b.4 | Integration Agent |
-| **6.2** | Hook OCR scanner output into the mandatory Confirm screen | `/client/src/pages/ConfirmMedicinesPage.jsx` | 5.4, 6.1 | Integration Agent |
-| **6.3** | End-to-end browser verification of full caregiver workflow | Full App (via Browser Subagent) | 6.2 | Integration Agent |
+| **1.0** | Master Plan approval & repository alignment | `/docs/PLAN.md` | None | Human & Lead Engineer |
+| **2.1** | Write PostgreSQL migrations (001-005) with integer IDs, synonyms, PRN, RLS | `/db/migrations/*.sql`, `/scripts/migrate.js` | 1.0 | Engine Agent |
+| **2.2** | Build sample seed data (30-50 brands) & real DDInter/brand importer scripts | `/db/seeds/*.json`, `/scripts/import-*.js`, `/scripts/seed.js` | 2.1 | Engine Agent |
+| **2.3** | Implement pure safety engine modules & fixed action templates in constants.js | `/server/engine/*.js` | 2.2 | Engine Agent |
+| **2.4** | Build unverified starter test suite (33 pairs + fixed-dataset negatives + synonym test) | `/server/engine/tests/*` | 2.3 | Engine Agent |
+| **3.1** | Express setup, config validation, PostgreSQL pool with session-based RLS | `/server/server.js`, `/server/app.js`, `/server/config.js`, `/server/.env.example` | 2.2 | API Agent |
+| **3.2** | Authentication module (bcrypt, JWT, refresh rotation, account deletion) | `/server/auth/*`, `/server/middleware/authenticate.js` | 3.1 | API Agent |
+| **3.3** | REST endpoints (search, normalize, check with scoped rule queries, patient/medicine CRUD) | `/server/routes/*`, `/server/middleware/rateLimiter.js` | 2.3, 3.2 | API Agent |
+| **3.4** | Input validation, error handling, and API integration test suite | `/server/middleware/errorHandler.js`, `/server/tests/*` | 3.3 | API Agent |
+| **4.1** | Client scaffold (Vite + React + Tailwind + Noto Sans design tokens) | `/client/package.json`, `/client/tailwind.config.js` | 1.0 | Frontend Agent |
+| **4.2** | Reusable UI components (Button, Card, SeverityBadge, FindingCard) | `/client/src/components/common/*` | 4.1 | Frontend Agent |
+| **4.3** | Desktop app shell (Sidebar, TopBar, Language Switcher, Text Scaling) | `/client/src/components/layout/*` | 4.2 | Frontend Agent |
+| **4.4** | Desktop screens with mocked API layer in `/client/src/api` | `/client/src/pages/*`, `/client/src/api/*`, `/client/src/mocks/*` | 4.3 | Frontend Agent |
+| **4.5** | Frontend component and screen unit tests (React Testing Library) | `/client/src/__tests__/*` | 4.4 | Frontend Agent |
+| **5.1** | Connect frontend API layer (`/client/src/api`) to live Express API | `/client/src/api/*` | 3.4, 4.5 | Integration Agent |
+| **5.2** | Verify desktop caregiver flow end-to-end in browser | Full desktop app | 5.1 | Integration Agent |
+| **6.1** | Canvas image pre-processing (grayscale, contrast, threshold, deskew) | `/client/src/ocr/imagePreprocessor.js` | 1.0 | OCR Agent |
+| **6.2** | Tesseract.js Web Worker integration & candidate name parser | `/client/src/ocr/ocrWorker.js`, `candidateExtractor.js` | 6.1 | OCR Agent |
+| **6.3** | Fuse.js fuzzy matcher with confidence scoring & test runner | `/client/src/ocr/fuzzyMatcher.js`, `/client/src/ocr/tests/*` | 6.2 | OCR Agent |
+| **7.1** | Mobile responsive layouts (360-430px) & 4-tab bottom navigation | `/client/src/components/layout/BottomNav.jsx` | 5.2 | Frontend Agent |
+| **7.2** | Mobile camera scan view with guide frame & privacy promise banner | `/client/src/pages/ScanPage.jsx` | 7.1 | Frontend Agent |
+| **7.3** | PWA manifest, service worker for app shell offline caching | `/client/public/manifest.webmanifest` | 7.2 | Frontend Agent |
+| **8.1** | Hook OCR pipeline into Confirm Medicines screen | `/client/src/pages/ConfirmMedicinesPage.jsx`, `/client/src/api/*` | 6.3, 7.3 | Integration Agent |
+| **8.2** | End-to-end verification of full mobile & desktop flow | Full application | 8.1 | Integration Agent |
 
 ---
 
-## 7. Test Plan & Golden Dangerous Drug Pairs
+## 7. Test Plan & Unverified Starter Set
 
-The safety engine must successfully flag every one of these 32 dangerous combinations in the golden test file (`server/engine/tests/golden-pairs.json`).
+> [!NOTE]
+> **Data & Verification Notice:** This table represents an **unverified starter set** for testing the engine's rule-evaluation mechanics. The severity tiers and clinical alerts in MedGuard are not permanently hard-coded into the application logic; they are imported from source datasets (e.g., DDInter) and subject to formal licensed pharmacist review.
+> 
+> **Caregiver Action Rule:** Under no circumstances will MedGuard instruct a caregiver to stop, change, switch, halve, or cap any medication. All caregiver actions strictly apply the fixed severity templates from `constants.js`.
 
-| # | Pair (Ingredient A + Ingredient B) | Severity | Clinical Mechanism & Concern | Caregiver Action |
+### Unverified Starter Test Pairs
+
+| # | Pair (Ingredient A + Ingredient B) | Severity (Subject to Data & Pharmacist Review) | Clinical Mechanism & Concern | Action Template Applied (`constants.js`) |
 |---|---|---|---|---|
-| **1** | Warfarin + Aspirin | Major | Anticoagulant + antiplatelet effect; dramatically increases risk of major internal bleeding and gastrointestinal hemorrhage. | Contact doctor today before giving both. Do not adjust doses yourself. |
-| **2** | Sildenafil + Nitroglycerin | Major | Synergistic nitric oxide/cGMP vasodilation causes catastrophic, potentially fatal drop in blood pressure. | Emergency warning: Never combine these. Seek immediate medical guidance. |
-| **3** | Phenelzine + Sertraline | Major | MAO inhibitor + SSRI produces life-threatening Serotonin Syndrome (fever, tremors, convulsions). | Strict contraindication: Requires a 14-day washout period between these medications. |
-| **4** | Lisinopril + Spironolactone | Major | ACE inhibitor combined with potassium-sparing diuretic causes dangerous Hyperkalemia (cardiac arrest risk). | Doctor must monitor potassium levels frequently. Watch for muscle weakness or irregular heartbeat. |
-| **5** | Methotrexate + Trimethoprim | Major | Trimethoprim inhibits renal clearance of methotrexate, causing severe bone marrow suppression and pancytopenia. | Contact doctor immediately. These must not be co-prescribed. |
-| **6** | Lithium + Ibuprofen | Major | NSAIDs reduce renal clearance of lithium, leading to acute lithium toxicity (tremors, vomiting, kidney failure). | Switch pain relief to paracetamol after checking with doctor. |
-| **7** | Tramadol + Fluoxetine | Major | Combined serotonergic activity increases seizure risk and can trigger Serotonin Syndrome. | Consult doctor for alternative pain relief. |
-| **8** | Clopidogrel + Omeprazole | Major | Omeprazole (CYP2C19 inhibitor) blocks the activation of clopidogrel, increasing risk of heart attack or stroke. | Doctor should switch to an alternative acid reducer like pantoprazole. |
-| **9** | Simvastatin + Clarithromycin | Major | Clarithromycin potently inhibits CYP3A4, causing massive statin accumulation, rhabdomyolysis, and kidney failure. | Temporarily withhold simvastatin during antibiotic course under medical direction. |
-| **10**| Digoxin + Amiodarone | Major | Amiodarone reduces digoxin excretion by ~50%, leading to fatal cardiac arrhythmias and nausea. | Digoxin dose typically needs to be halved when starting amiodarone. |
-| **11**| Ciprofloxacin + Theophylline | Major | Ciprofloxacin inhibits CYP1A2, causing toxic theophylline accumulation, palpitations, and seizures. | Doctor must adjust dose or change antibiotic. |
-| **12**| Amiodarone + Levofloxacin | Major | Additive QT-interval prolongation dramatically raises the risk of Torsades de Pointes (fatal arrhythmia). | High alert: Electrocardiogram (ECG) monitoring required; doctor should choose alternative antibiotic. |
-| **13**| Potassium Chloride + Spironolactone | Major | Simultaneous potassium supplementation with potassium-sparing diuretic causes severe hyperkalemia. | Re-evaluate necessity of potassium supplement with prescribing doctor. |
-| **14**| Warfarin + Fluconazole | Major | Fluconazole potently inhibits CYP2C9, drastically elevating INR and causing severe hemorrhage. | Doctor must closely monitor INR and reduce warfarin dose. |
-| **15**| Rivaroxaban + Ketoconazole | Major | Dual P-gp and CYP3A4 inhibition increases rivaroxaban exposure, substantially raising bleeding risk. | Avoid co-administration; contact doctor. |
-| **16**| Allopurinol + Azathioprine | Major | Allopurinol blocks xanthine oxidase metabolism of azathioprine, causing fatal myelosuppression. | Extreme caution: Requires 75% dose reduction of azathioprine under specialist care. |
-| **17**| Colchicine + Clarithromycin | Major | Clarithromycin increases colchicine blood levels to fatal levels, especially in patients with renal impairment. | Contraindicated in elderly or kidney patients. Consult doctor immediately. |
-| **18**| Metoprolol + Verapamil | Major | Combined negative inotropic and chronotropic effects cause profound bradycardia, heart block, and shock. | Doctor must evaluate heart rate and blood pressure immediately. |
-| **19**| Digoxin + Furosemide | Major | Loop diuretic causes hypokalemia (low potassium), which sensitizes the heart to lethal digoxin toxicity. | Potassium levels must be monitored and supplemented as directed by doctor. |
-| **20**| Tacrolimus + Ketoconazole | Major | CYP3A4 and P-gp inhibition multiplies tacrolimus blood levels, causing severe nephrotoxicity. | Frequent drug level monitoring and dose reduction mandatory. |
-| **21**| Carbamazepine + Ethinylestradiol | Major | Strong CYP3A4 induction by carbamazepine accelerates hormone breakdown, causing contraceptive failure. | Use non-hormonal or barrier methods; consult doctor. |
-| **22**| Sertraline + Linezolid | Major | Linezolid possesses reversible MAO inhibition, causing severe serotonin toxicity with SSRIs. | Avoid concurrent use; notify prescribing doctor immediately. |
-| **23**| Diazepam + Oxycodone | Major | Benzodiazepine + opioid produces profound CNS and respiratory depression, coma, or death. | Black box warning: Caregiver must monitor breathing closely; discuss safer alternatives. |
-| **24**| Methadone + Ciprofloxacin | Major | Ciprofloxacin inhibits methadone metabolism and adds QT prolongation risk, risking fatal arrhythmias. | Medical consultation required to select a different antibiotic. |
-| **25**| Warfarin + Ibuprofen | Major | Triple hazard: stomach mucosal irritation + platelet inhibition + anticoagulation = high-risk GI hemorrhage. | Avoid NSAIDs with warfarin; use paracetamol for mild pain if approved by doctor. |
-| **26**| Cyclosporine + Atorvastatin | Major | Cyclosporine inhibits atorvastatin uptake transporters, triggering severe myopathy and rhabdomyolysis. | Atorvastatin dose must be capped at 10mg or substituted under medical supervision. |
-| **27**| Trimethoprim + Spironolactone | Major | Additive potassium retention triggers severe hyperkalemia, particularly in elderly patients. | Regular blood tests needed; watch for cardiac symptoms. |
-| **28**| Ergotamine + Clarithromycin | Major | CYP3A4 inhibition produces severe peripheral vasospasm (ergotism), gangrene, and cerebral ischemia. | Concurrent use strictly prohibited. Stop and contact doctor. |
-| **29**| Paroxetine + St. John's Wort | Major | Herb-drug interaction combining multiple serotonergic agents causes Serotonin Syndrome. | Stop herbal supplement immediately and inform the doctor. |
-| **30**| Diltiazem + Simvastatin | Major | Moderate CYP3A4 inhibition raises simvastatin blood concentration, escalating muscle breakdown (myopathy). | Limit simvastatin dose to maximum 10mg daily when taking diltiazem. |
-| **31**| Methotrexate + Naproxen | Major | NSAIDs reduce renal tubular secretion of methotrexate, resulting in life-threatening MTX toxicity. | Avoid concurrent NSAID use during high-dose methotrexate therapy. |
-| **32**| Phenytoin + Voriconazole | Major | Voriconazole increases phenytoin levels (ataxia, toxicity) while phenytoin drastically reduces voriconazole efficacy. | Dual monitoring of blood levels and dose adjustments required. |
+| **1** | Warfarin + Aspirin | Major | Combined anticoagulant and antiplatelet activity; elevated risk of major internal or GI bleeding. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **2** | Aspirin + Ibuprofen | Major | Ibuprofen interferes with the antiplatelet cardioprotective effect of aspirin and compounds GI mucosal ulceration risk. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **3** | Sildenafil + Nitroglycerin | Major | Synergistic vasodilation can cause a dangerous drop in blood pressure. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **4** | Phenelzine + Sertraline | Major | MAO inhibitor combined with SSRI creates risk of Serotonin Syndrome. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **5** | Lisinopril + Spironolactone | Major | Concomitant ACE inhibitor and potassium-sparing diuretic increases risk of hyperkalemia. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **6** | Methotrexate + Trimethoprim | Major | Trimethoprim reduces renal clearance of methotrexate, risking bone marrow toxicity. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **7** | Lithium + Ibuprofen | Major | NSAIDs reduce renal elimination of lithium, risking toxic lithium accumulation. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **8** | Tramadol + Fluoxetine | Major | Additive serotonergic activity increases seizure risk and Serotonin Syndrome potential. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **9** | Clopidogrel + Omeprazole | Major | Omeprazole may diminish the activation and antiplatelet efficacy of clopidogrel. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **10**| Simvastatin + Clarithromycin | Major | Clarithromycin inhibits statin metabolism, significantly increasing muscle toxicity risk. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **11**| Digoxin + Amiodarone | Major | Amiodarone significantly increases digoxin blood concentration. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **12**| Ciprofloxacin + Theophylline | Major | Ciprofloxacin inhibits theophylline clearance, increasing toxicity risk. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **13**| Amiodarone + Levofloxacin | Major | Additive QT-interval prolongation increases risk of cardiac arrhythmias. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **14**| Potassium Chloride + Spironolactone | Major | Concurrent potassium supplement and potassium-sparing diuretic can cause severe hyperkalemia. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **15**| Warfarin + Fluconazole | Major | Fluconazole inhibits warfarin metabolism, significantly increasing bleeding risk. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **16**| Rivaroxaban + Ketoconazole | Major | Ketoconazole increases rivaroxaban blood levels, raising bleeding risk. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **17**| Allopurinol + Azathioprine | Major | Allopurinol impedes azathioprine breakdown, escalating risk of bone marrow suppression. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **18**| Colchicine + Clarithromycin | Major | Clarithromycin substantially raises colchicine exposure, especially in renal impairment. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **19**| Metoprolol + Verapamil | Major | Combined cardiodepressant effects can lead to severe bradycardia or heart block. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **20**| Digoxin + Furosemide | Major | Loop diuretic-induced potassium loss sensitizes the patient to digoxin toxicity. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **21**| Tacrolimus + Ketoconazole | Major | Ketoconazole significantly elevates tacrolimus blood levels, risking kidney toxicity. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **22**| Carbamazepine + Ethinylestradiol | Major | Carbamazepine accelerates estrogen breakdown, reducing oral contraceptive efficacy. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **23**| Sertraline + Linezolid | Major | Linezolid possesses MAO-inhibiting properties, posing Serotonin Syndrome risk with SSRIs. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **24**| Diazepam + Oxycodone | Major | Concomitant benzodiazepine and opioid therapy produces heightened risk of profound sedation and respiratory depression. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **25**| Methadone + Ciprofloxacin | Major | Ciprofloxacin may elevate methadone blood concentration and prolong the cardiac QT interval. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **26**| Warfarin + Ibuprofen | Major | NSAID-induced gastric irritation combined with systemic anticoagulation creates high bleeding risk. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **27**| Cyclosporine + Atorvastatin | Major | Cyclosporine elevates statin blood concentration, increasing risk of muscle injury. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **28**| Trimethoprim + Spironolactone | Major | Both agents reduce renal potassium excretion, risking dangerous hyperkalemia. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **29**| Ergotamine + Clarithromycin | Major | Macrolide antibiotic inhibits ergotamine clearance, creating risk of vasospasm. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **30**| Paroxetine + St. John's Wort | Major | Co-administration of herbal and pharmaceutical serotonergic agents elevates Serotonin Syndrome risk. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **31**| Diltiazem + Simvastatin | Major | Diltiazem raises simvastatin levels, increasing potential for muscle aches and toxicity. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **32**| Methotrexate + Naproxen | Major | NSAIDs impede methotrexate clearance, heightening risk of serious toxicity. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
+| **33**| Phenytoin + Voriconazole | Major | Mutual pharmacokinetic interactions can cause elevated phenytoin toxicity or antifungal failure. | Major Template: Contact doctor or pharmacist today before giving these medicines together. |
 
-### Additional Golden Test Suites (Duplicates & Combinations)
+---
 
-* **Duplicate Therapy Golden Test:**
-  - `Crocin 500` + `Dolo 650` $\rightarrow$ Flagged as **Major Duplicate**: Both contain `paracetamol`. Cumulative daily dose calculation prevents hepatotoxicity.
-  - `Brufen 400` + `Voveran 50` $\rightarrow$ Flagged as **Major Duplicate Class**: Both are NSAIDs (`ibuprofen` + `diclofenac`).
-* **Combination Expansion Golden Test:**
+### Negative Interaction Tests (Fixed Test Dataset Evaluation)
+
+> [!IMPORTANT]
+> The negative interaction tests evaluate the engine against a **small fixed test fixture in which the pairs below have zero entries in the interaction table**. This verifies that when a pair is absent from the dataset, the engine correctly returns `severity: "info"` and the exact text *"No known interaction found in our data."* It makes **no assertion** that these drug pairs have no pharmacological interaction in clinical medicine.
+
+- Test Fixture Pair: `Ingredient A (id: 1)` + `Ingredient B (id: 99)` absent from fixture $\rightarrow$ Result: `"No known interaction found in our data."`
+- Starter Test Cases evaluated against absent dataset entries:
+  - `Paracetamol` + `Amoxicillin` $\rightarrow$ Result: `"No known interaction found in our data."`
+  - `Atorvastatin` + `Metformin` $\rightarrow$ Result: `"No known interaction found in our data."`
+
+---
+
+### Unrecognized Medicine Test Case
+
+- **Input:** `"HerbalChurnaStripX 500mg"` (submitted to `/api/medicines/normalize` and left unmapped).
+- **Required Behavior:** Passed in `unrecognized` array to `/api/check`. Must **never** be dropped silently.
+- **Result:** Returned in `unrecognized` array with `reason: "Could not identify active ingredients in catalog. Please show this packaging to a doctor or pharmacist."`
+
+---
+
+### Duplicate Therapy, Synonym & Combination Starter Tests
+
+- **Ingredient Synonym Resolution Test:**
+  - Input: Brand containing `acetaminophen` $\rightarrow$ Resolved to canonical `paracetamol` (id: 1) via `ingredient_synonyms`.
+- **Exact Duplicate Ingredient:**
+  - `Crocin 500` + `Dolo 650` $\rightarrow$ Flagged as **Major Duplicate**: Both contain `paracetamol`. Daily cumulative dose checked against limits.
+- **Pharmacological Class Duplicate:**
+  - `Brufen 400` + `Voveran 50` $\rightarrow$ Flagged as **Major Duplicate Class**: Both belong to the `NSAID` class. Action: Moderate/Major Action Template applied.
+- **Combination Product Expansion:**
   - `Pan-D` expands to `pantoprazole 40mg` + `domperidone 30mg`.
   - `Augmentin 625` expands to `amoxicillin 500mg` + `clavulanic acid 125mg`.
   - `Telma-AM` expands to `telmisartan 40mg` + `amlodipine 5mg`.
-* **Geriatric Beers Criteria Golden Test (Age 74):**
-  - `Alprazolam 0.5mg` $\rightarrow$ Flagged as **Major Beers Alert**: High risk of falls, delirium, and cognitive decline in elderly.
-  - `Diphenhydramine 25mg` $\rightarrow$ Flagged as **Major Beers Alert**: Potent anticholinergic, risk of confusion, urinary retention, and constipation.
+- **PRN As-Needed Dosing Check:**
+  - Medicine marked `is_prn: true` $\rightarrow$ Engine dose check returns `"Cannot calculate daily total for as-needed (PRN) medicine"` rather than multiplying daily total.
+- **Beers Criteria Starter Test (Patient Age 74):**
+  - `Alprazolam 0.5mg` $\rightarrow$ Flagged as **Beers Alert**: Increased risk of falls and cognitive impairment in older adults.
+  - `Diphenhydramine 25mg` $\rightarrow$ Flagged as **Beers Alert**: Strong anticholinergic effects.
 
 ---
 
-## 8. Risks, Mitigations & Questions for You
+## 8. Technical Risks, Mitigations & Upstream Documentation Alignments
 
-### Key Technical & Operational Risks
+### Technical Risks & Mitigations
 
 | Risk | Severity | Mitigation Strategy |
 |---|---|---|
-| **1. OCR Glare on Foil Blister Strips** | High | Apply image pre-processing (deskew, adaptive thresholding). Provide an intuitive on-screen guide frame with real-time feedback. **Mandatory Confirm-and-Edit screen** guarantees the user always verifies OCR text before analysis. |
-| **2. Indian Brand Name Variations** | Medium | Maintain a comprehensive local brand mapping table as the primary lookup. Use Fuse.js with fuzzy distance thresholds to tolerate minor typographical or OCR spelling errors. Fallback to RxNorm API. |
-| **3. Mobile Performance & Battery** | Medium | Run Tesseract.js in a dedicated Web Worker so the UI never stutters. Scale photos down to a maximum of 1200px width before OCR processing to keep memory footprints low on budget Android devices. |
-| **4. Accidental Patient Health Data Leakage** | Critical | Enforce strict zero-logging of medicine names, patient names, or images in console and log files. Process photos exclusively in browser memory (never upload or save images). Parameterized SQL queries only. |
-| **5. Caregiver Over-Reliance** | High | Maintain bold, unambiguous disclaimers on every report and PDF. Present clear next steps (e.g., *"Contact doctor today"*). Never use the word *"safe"*. |
+| **1. OCR Glare & Distorted Blister Foil** | High | Apply image pre-processing (deskew, grayscale, adaptive thresholding). Provide camera guide frame. **Mandatory Confirm-and-Edit screen** guarantees caregiver reviews OCR matches before any safety check is executed. |
+| **2. Indian Brand Variations & Spelling Differences** | Medium | Maintain local Indian brand mapping table as primary lookup with `ingredient_synonyms`. Use Fuse.js with distance thresholds to tolerate minor OCR errors. Unrecognized brands are flagged explicitly. |
+| **3. Mobile Performance & Memory Footprint** | Medium | Run Tesseract.js inside a dedicated Web Worker to prevent UI freezing. Scale captured photos to a maximum width of 1200px before processing on budget Android devices. |
+| **4. Accidental Patient Health Data Leakage** | Critical | Enforce strict zero-logging of medicine names, patient names, or images in console and log files. Photos processed exclusively on device (never uploaded or stored). Parameterized SQL queries only. |
+| **5. Caregiver Over-Reliance** | High | Display mandatory disclaimers on every report and PDF. Actions strictly apply fixed consultation templates. Never use the word "safe". |
 
 ---
 
-### Open Questions for Your Approval
+### Upstream Documentation Changes Required (Human Only)
 
-1. **Brand Catalog Strategy for Engine Development:**
-   - *Option A (Recommended):* For Phase 2, the Engine Agent will build a curated, high-quality seed dataset containing the **top 250 most common Indian geriatric brand names** (covering cardiac, diabetes, hypertension, NSAIDs, antibiotics, and combinations like Pan-D, Augmentin, Telma-AM).
-   - *Option B:* You will provide an existing external CSV/JSON brand database file right now.
-   *(We recommend Option A so we can move forward immediately without external blockers).*
+The following adjustments must be made by the project lead in the human-owned files:
 
-2. **Database Environment:**
-   - *Option A (Recommended):* We design the database connection (`db/dbClient.js`) to use standard PostgreSQL connection strings (`DATABASE_URL`). This works seamlessly whether you run a local PostgreSQL instance or connect directly to a hosted Supabase PostgreSQL project.
-   - *Option B:* Enforce direct Supabase JS Client integration only.
-
-3. **Caregiver Authentication:**
-   - *Option A (Recommended for MVP):* Standard secure email/password registration with JWT (access + refresh tokens) and bcrypt hashing.
-   - *Option B:* Phone number + SMS OTP authentication (would require an SMS gateway like Twilio or MSG91).
-
----
-
-## 9. Definition of Done for Prompt 01
-
-- [x] Read all required documentation: `AGENTS.md`, `PRD.md`, `docs/design/DESIGN.md`, `stitch-export/`.
-- [x] No application code created yet (planning only).
-- [x] Folder structure aligns strictly with agent ownership boundaries.
-- [x] Complete SQL schema with indexes and Row-Level Security defined.
-- [x] Complete REST API contract with exact request/response schemas specified.
-- [x] Pure deterministic safety-engine architecture specified across all 9 check types.
-- [x] Ordered task list with clear ownership and dependencies.
-- [x] 32 clinically verified golden dangerous drug pairs documented.
-- [x] Technical terms explained in simple, clear language.
-- [x] Documented as a dedicated artifact for your review and approval.
-
+1. **`AGENTS.md` (Section 3 Folder Ownership):**
+   - Update the table row for `/client` to clarify:
+     - The Frontend Agent owns `/client` and creates `/client/src/api` with mocked clients during Phase 4.
+     - The Integration Agent is granted permission in Phase 5 to update `/client/src/api` to connect to live backend endpoints.
+2. **`docs/prompts/04a-frontend-desktop.md`:**
+   - Clarify Task 5: The Frontend Agent scaffolds `/client/src/api` using mock handlers conforming to the REST contract in `/docs/PLAN.md`, preparing the API interface for the Integration Agent in Phase 5.

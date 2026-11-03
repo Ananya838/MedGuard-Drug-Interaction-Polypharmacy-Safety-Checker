@@ -33,8 +33,11 @@ TASKS (show me a short plan first and wait for approval):
    same shell and two-column rules: Login/Register, Patient profile form, Emergency card,
    and Scan (on desktop use drag-and-drop upload and optional webcam capture, with the same
    "photos stay on this device" privacy banner).
-5. Use mocked API responses in /client/src/mocks until the real backend is ready. Keep all
-   API calls in one layer (/client/src/api) so swapping mocks for real calls is easy.
+5. Create the API client layer in /client/src/api with MOCKED responses from
+   /client/src/mocks (including mock schedule data; the reminders backend is deferred). Keep
+   all API calls in that one layer, using the request and response shapes from /docs/PLAN.md,
+   so the Integration agent can later switch it to the real API. The check call sends
+   confirmed brand IDs plus an unrecognized list only.
 6. Build mobile-READY, not mobile-DESIGNED: use flex and grid, relative units (rem, %),
    min/max widths and no hard-coded pixel widths for layout, so the next phase can add
    mobile layouts without rewrites. Put the sidebar and top bar in separate components so
@@ -45,7 +48,9 @@ TASKS (show me a short plan first and wait for approval):
    pinch-zoom or browser zoom.
 8. Print styles: the Safety report must print cleanly on one or two A4 pages
    (hide sidebar and top bar), because doctors will print it.
-9. Use the browser to open the app at 1440px width, screenshot every screen, compare it with
+9. Write component and screen tests (Vitest + React Testing Library) for Button,
+   SeverityBadge, FindingCard and the Confirm medicines screen, in /client/src/__tests__.
+10. Use the browser to open the app at 1440px width, screenshot every screen, compare it with
    the matching desktop screenshot, list the differences and fix them. Also check at 1280px
    and 1920px.
 

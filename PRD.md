@@ -74,7 +74,8 @@ Caregivers are usually non-medical family members who cannot judge these risks.
 
 **Normalization**
 - FR-8 Map brand to active ingredient(s) and strengths using the local table first, then
-  RxNorm.
+  RxNorm. Ingredient synonyms (acetaminophen = paracetamol) are resolved through a synonym
+  table so datasets match each other.
 - FR-9 Combination products map to several ingredients (for example Pan-D =
   pantoprazole + domperidone).
 
@@ -168,30 +169,22 @@ before implementing.
 - **Reliability:** engine has no external calls at check time (uses cached data).
 - **Languages:** English first; Hindi, Kannada, Tamil, Telugu later.
 
-## 12. Acceptance criteria and golden tests
-- All **golden dangerous pairs** must be flagged at the expected severity (the test file
-  is stored in `server/engine/tests/golden-pairs.json`).
-- Duplicate brands with the same ingredient must be flagged (for example Crocin + Dolo 650).
+## 12. Acceptance criteria and starter tests
+- The **unverified starter set** (`server/engine/tests/starter-pairs.json`) must be flagged by
+  the engine. It tests the engine's mechanics. It is not clinical validation. Severity comes
+  from the dataset, never from code.
+- Negative tests use a small fixed test dataset in which the pair is known to be absent.
+- Duplicate brands with the same ingredient must be flagged (Crocin + Dolo 650).
 - Combination products must expand to all ingredients (Pan-D).
+- Synonyms must resolve to one ingredient (acetaminophen and paracetamol).
 - Unrecognized medicines must never be silently dropped.
+- As-needed (PRN) medicines are reported as "cannot calculate daily total".
+- Caregiver action text comes from fixed severity templates and never advises changing,
+  stopping or dosing a medicine.
 - OCR: report accuracy on at least 50 real strips, before and after pre-processing.
-- A pharmacist or doctor reviews a sample of the engine output.
+- A pharmacist or doctor reviews a sample of real engine output before any public use.
 
-**Starter examples for the golden set (must be verified against DDInter and by a
-pharmacist; do not treat this list as authoritative):**
-| Pair | Concern |
-|---|---|
-| Warfarin + aspirin | Increased bleeding risk |
-| Sildenafil + nitroglycerin | Dangerous drop in blood pressure |
-| SSRI + MAO inhibitor | Serotonin syndrome |
-| ACE inhibitor + potassium-sparing diuretic | High potassium |
-| Methotrexate + trimethoprim | Serious blood toxicity |
-| Lithium + NSAID | Raised lithium levels |
-| Tramadol + SSRI | Seizure and serotonin risk |
-| Clopidogrel + omeprazole | Reduced clopidogrel effect |
-
-Duplicate and combination tests: Crocin + Dolo 650 (both paracetamol); Pan-D expands to
-pantoprazole + domperidone.
+Starter pairs and the full test table are in `docs/PLAN.md` section 7.
 
 ## 13. Risks
 | Risk | Mitigation |
