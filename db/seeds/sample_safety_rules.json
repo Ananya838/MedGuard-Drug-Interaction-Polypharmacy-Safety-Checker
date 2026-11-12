@@ -1,0 +1,75 @@
+{
+  "source": "MedGuard sample data (not clinically verified)",
+  "beersRules": [
+    {
+      "ingredient": "alprazolam",
+      "severity": "major",
+      "rationale": "Benzodiazepines increase risk of cognitive impairment, delirium, falls, and motor vehicle accidents in older adults.",
+      "recommendation": "Avoid benzodiazepines in elderly patients for insomnia or agitation.",
+      "source": "MedGuard sample data (not clinically verified)"
+    },
+    {
+      "ingredient": "diazepam",
+      "severity": "major",
+      "rationale": "Long-acting benzodiazepines accumulate in elderly bodies due to prolonged half-life, causing excessive sedation and falls.",
+      "recommendation": "Avoid long-acting benzodiazepines in older adults.",
+      "source": "MedGuard sample data (not clinically verified)"
+    },
+    {
+      "ingredient": "diphenhydramine",
+      "severity": "major",
+      "rationale": "First-generation antihistamines are highly anticholinergic, risking confusion, dry mouth, constipation, and urinary retention in older adults.",
+      "recommendation": "Avoid diphenhydramine and anticholinergic sedatives in patients 65 and older.",
+      "source": "MedGuard sample data (not clinically verified)"
+    }
+  ],
+  "timingRules": [
+    {
+      "ingredientA": "ciprofloxacin",
+      "ingredientB": "potassium chloride",
+      "minGapHours": 2.0,
+      "severity": "moderate",
+      "advice": "Separate taking Ciprofloxacin and multivalent electrolytes by at least 2 hours to avoid reduced antibiotic absorption.",
+      "source": "MedGuard sample data (not clinically verified)"
+    }
+  ],
+  "contraindications": [
+    {
+      "ingredient": "ibuprofen",
+      "conditionCode": "CKD",
+      "severity": "major",
+      "description": "NSAIDs inhibit renal prostaglandins, causing acute reduction in glomerular filtration and worsening Chronic Kidney Disease.",
+      "source": "MedGuard sample data (not clinically verified)"
+    },
+    {
+      "ingredient": "diclofenac",
+      "conditionCode": "PEPTIC_ULCER",
+      "severity": "major",
+      "description": "NSAIDs damage the gastric mucosal barrier, risking active ulcer perforation or gastrointestinal bleeding.",
+      "source": "MedGuard sample data (not clinically verified)"
+    },
+    {
+      "ingredient": "metoprolol",
+      "conditionCode": "ASTHMA",
+      "severity": "major",
+      "description": "Beta-blockers can trigger severe bronchospasm in patients with Asthma or hyperreactive airways.",
+      "source": "MedGuard sample data (not clinically verified)"
+    }
+  ],
+  "foodInteractions": [
+    {
+      "ingredient": "atorvastatin",
+      "item": "grapefruit",
+      "severity": "moderate",
+      "description": "Large amounts of grapefruit juice inhibit intestinal CYP3A4, increasing blood concentrations of Atorvastatin and raising muscle toxicity risk.",
+      "source": "MedGuard sample data (not clinically verified)"
+    },
+    {
+      "ingredient": "diazepam",
+      "item": "alcohol",
+      "severity": "major",
+      "description": "Alcohol produces additive central nervous system depression with Benzodiazepines, increasing risk of profound sedation and respiratory depression.",
+      "source": "MedGuard sample data (not clinically verified)"
+    }
+  ]
+}

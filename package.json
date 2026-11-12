@@ -1,0 +1,26 @@
+{
+  "name": "medguard",
+  "version": "0.1.0",
+  "description": "Drug interaction and polypharmacy safety checker for caregivers of elderly patients.",
+  "type": "module",
+  "scripts": {
+    "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js",
+    "verify-db": "node scripts/verify-db.js",
+    "test:engine": "node --test server/engine/tests/*.test.js",
+    "test:importers": "node --test scripts/tests/*.test.js",
+    "test:server": "node --test server/tests/*.test.js",
+    "test": "node --test server/engine/tests/*.test.js scripts/tests/*.test.js server/tests/*.test.js",
+    "start": "node server/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.7",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.3",
+    "jsonwebtoken": "^9.0.3",
+    "pdfkit": "^0.20.2",
+    "pg": "^8.13.1"
+  }
+}

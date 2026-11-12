@@ -1,0 +1,269 @@
+{
+  "source": "MedGuard sample data (not clinically verified)",
+  "pairs": [
+    {
+      "ingredientA": "aspirin",
+      "ingredientB": "warfarin",
+      "severity": "major",
+      "mechanism": "Combined anticoagulant and antiplatelet activity; elevated risk of major internal or GI bleeding.",
+      "summary": "Combining Warfarin and Aspirin greatly increases the risk of serious bleeding.",
+      "explanation": "Warfarin slows down blood clotting, and Aspirin stops platelets from sticking together. Taking both multiplies the risk of stomach ulcers and internal bleeding."
+    },
+    {
+      "ingredientA": "aspirin",
+      "ingredientB": "ibuprofen",
+      "severity": "major",
+      "mechanism": "Ibuprofen interferes with the antiplatelet cardioprotective effect of aspirin and compounds GI mucosal ulceration risk.",
+      "summary": "Ibuprofen can reduce the heart-protective effect of daily Aspirin and increases stomach bleeding risk.",
+      "explanation": "Ibuprofen competes with Aspirin at platelet binding sites, blocking Aspirin's antiplatelet action, while both medicines irritate the stomach lining."
+    },
+    {
+      "ingredientA": "nitroglycerin",
+      "ingredientB": "sildenafil",
+      "severity": "major",
+      "mechanism": "Synergistic vasodilation can cause a dangerous drop in blood pressure.",
+      "summary": "Taking Sildenafil and Nitroglycerin together can cause a severe, life-threatening drop in blood pressure.",
+      "explanation": "Both medications promote nitric oxide pathways that relax blood vessels. Combining them causes massive vasodilation and sudden circulatory collapse."
+    },
+    {
+      "ingredientA": "phenelzine",
+      "ingredientB": "sertraline",
+      "severity": "major",
+      "mechanism": "MAO inhibitor combined with SSRI creates risk of Serotonin Syndrome.",
+      "summary": "Combining an MAO inhibitor with an SSRI can cause fatal Serotonin Syndrome.",
+      "explanation": "Both drugs markedly elevate serotonin levels in the central nervous system, risking high fever, rigid muscles, seizures, and delirium."
+    },
+    {
+      "ingredientA": "lisinopril",
+      "ingredientB": "spironolactone",
+      "severity": "major",
+      "mechanism": "Concomitant ACE inhibitor and potassium-sparing diuretic increases risk of hyperkalemia.",
+      "summary": "Taking Lisinopril with Spironolactone increases blood potassium to dangerous levels (hyperkalemia).",
+      "explanation": "Lisinopril decreases aldosterone production and Spironolactone blocks potassium excretion, causing potassium to accumulate and risk cardiac arrest."
+    },
+    {
+      "ingredientA": "methotrexate",
+      "ingredientB": "trimethoprim",
+      "severity": "major",
+      "mechanism": "Trimethoprim reduces renal clearance of methotrexate, risking bone marrow toxicity.",
+      "summary": "Combining Trimethoprim and Methotrexate can cause life-threatening bone marrow toxicity.",
+      "explanation": "Trimethoprim inhibits renal clearance of Methotrexate and has additive antifolate effects, causing severe drops in blood cell counts."
+    },
+    {
+      "ingredientA": "ibuprofen",
+      "ingredientB": "lithium",
+      "severity": "major",
+      "mechanism": "NSAIDs reduce renal elimination of lithium, risking toxic lithium accumulation.",
+      "summary": "Ibuprofen increases blood levels of Lithium, risking severe lithium poisoning.",
+      "explanation": "NSAIDs decrease kidney blood flow and reduce renal excretion of lithium, resulting in toxic buildup, tremors, and kidney damage."
+    },
+    {
+      "ingredientA": "fluoxetine",
+      "ingredientB": "tramadol",
+      "severity": "major",
+      "mechanism": "Additive serotonergic activity increases seizure risk and Serotonin Syndrome potential.",
+      "summary": "Combining Tramadol and Fluoxetine increases the risk of seizures and Serotonin Syndrome.",
+      "explanation": "Fluoxetine inhibits the metabolism of Tramadol and both medicines raise serotonin levels, increasing neurotoxicity and lowering seizure threshold."
+    },
+    {
+      "ingredientA": "clopidogrel",
+      "ingredientB": "omeprazole",
+      "severity": "major",
+      "mechanism": "Omeprazole may diminish the activation and antiplatelet efficacy of clopidogrel.",
+      "summary": "Omeprazole significantly reduces the antiplatelet effectiveness of Clopidogrel.",
+      "explanation": "Omeprazole inhibits CYP2C19, the liver enzyme required to convert Clopidogrel into its active form, leaving the patient under-protected against clots."
+    },
+    {
+      "ingredientA": "clarithromycin",
+      "ingredientB": "simvastatin",
+      "severity": "major",
+      "mechanism": "Clarithromycin inhibits statin metabolism, significantly increasing muscle toxicity risk.",
+      "summary": "Clarithromycin causes dangerous accumulation of Simvastatin, leading to severe muscle breakdown.",
+      "explanation": "Clarithromycin potently inhibits CYP3A4, causing massive blood concentrations of Simvastatin that can trigger rhabdomyolysis and kidney failure."
+    },
+    {
+      "ingredientA": "amiodarone",
+      "ingredientB": "digoxin",
+      "severity": "major",
+      "mechanism": "Amiodarone significantly increases digoxin blood concentration.",
+      "summary": "Amiodarone doubles the blood level of Digoxin, risking fatal heart rhythm disturbances.",
+      "explanation": "Amiodarone inhibits P-glycoprotein transport and renal elimination of Digoxin, leading to toxicity manifested by nausea, vision changes, and arrhythmias."
+    },
+    {
+      "ingredientA": "ciprofloxacin",
+      "ingredientB": "theophylline",
+      "severity": "major",
+      "mechanism": "Ciprofloxacin inhibits theophylline clearance, increasing toxicity risk.",
+      "summary": "Ciprofloxacin causes toxic accumulation of Theophylline in the body.",
+      "explanation": "Ciprofloxacin inhibits the CYP1A2 enzyme that clears Theophylline, raising blood levels and risking seizures, nausea, and irregular heartbeats."
+    },
+    {
+      "ingredientA": "amiodarone",
+      "ingredientB": "levofloxacin",
+      "severity": "major",
+      "mechanism": "Additive QT-interval prolongation increases risk of cardiac arrhythmias.",
+      "summary": "Taking Amiodarone and Levofloxacin together greatly increases the risk of dangerous heart rhythm disorders.",
+      "explanation": "Both medications prolong the electrical QT interval of the heart. Using both exponentially raises the hazard of Torsades de Pointes."
+    },
+    {
+      "ingredientA": "potassium chloride",
+      "ingredientB": "spironolactone",
+      "severity": "major",
+      "mechanism": "Concurrent potassium supplement and potassium-sparing diuretic can cause severe hyperkalemia.",
+      "summary": "Taking Potassium supplements with Spironolactone can cause fatal hyperkalemia.",
+      "explanation": "Spironolactone is a potassium-sparing diuretic. Adding external potassium supplements causes dangerous blood potassium buildup and heart stoppage."
+    },
+    {
+      "ingredientA": "fluconazole",
+      "ingredientB": "warfarin",
+      "severity": "major",
+      "mechanism": "Fluconazole inhibits warfarin metabolism, significantly increasing bleeding risk.",
+      "summary": "Fluconazole severely increases the blood-thinning effect of Warfarin, causing major bleeding.",
+      "explanation": "Fluconazole inhibits CYP2C9, the primary enzyme that breaks down Warfarin, causing rapid spike in INR and severe hemorrhage risk."
+    },
+    {
+      "ingredientA": "ketoconazole",
+      "ingredientB": "rivaroxaban",
+      "severity": "major",
+      "mechanism": "Ketoconazole increases rivaroxaban blood levels, raising bleeding risk.",
+      "summary": "Ketoconazole significantly increases Rivaroxaban levels, escalating bleeding risk.",
+      "explanation": "Ketoconazole blocks both CYP3A4 and P-glycoprotein, dramatically elevating systemic exposure to Rivaroxaban."
+    },
+    {
+      "ingredientA": "allopurinol",
+      "ingredientB": "azathioprine",
+      "severity": "major",
+      "mechanism": "Allopurinol impedes azathioprine breakdown, escalating risk of bone marrow suppression.",
+      "summary": "Allopurinol blocks the breakdown of Azathioprine, causing life-threatening bone marrow failure.",
+      "explanation": "Allopurinol inhibits xanthine oxidase, preventing the inactivation of Azathioprine metabolites and causing catastrophic drops in white blood cells."
+    },
+    {
+      "ingredientA": "clarithromycin",
+      "ingredientB": "colchicine",
+      "severity": "major",
+      "mechanism": "Clarithromycin substantially raises colchicine exposure, especially in renal impairment.",
+      "summary": "Clarithromycin causes dangerous Colchicine toxicity, which can be fatal.",
+      "explanation": "Clarithromycin inhibits CYP3A4 and P-gp pathways responsible for colchicine clearance, especially hazardous in older adults or kidney patients."
+    },
+    {
+      "ingredientA": "metoprolol",
+      "ingredientB": "verapamil",
+      "severity": "major",
+      "mechanism": "Combined cardiodepressant effects can lead to severe bradycardia or heart block.",
+      "summary": "Combining Metoprolol with Verapamil can cause severe bradycardia, heart block, or heart failure.",
+      "explanation": "Both medicines depress cardiac conduction and contractility through complementary pathways, causing profound drops in heart rate."
+    },
+    {
+      "ingredientA": "digoxin",
+      "ingredientB": "furosemide",
+      "severity": "major",
+      "mechanism": "Loop diuretic-induced potassium loss sensitizes the patient to digoxin toxicity.",
+      "summary": "Furosemide-induced low potassium severely increases the risk of fatal Digoxin toxicity.",
+      "explanation": "Furosemide causes potassium loss in urine. Low potassium sensitizes heart muscle cells to Digoxin, triggering arrhythmias even at normal digoxin levels."
+    },
+    {
+      "ingredientA": "ketoconazole",
+      "ingredientB": "tacrolimus",
+      "severity": "major",
+      "mechanism": "Ketoconazole significantly elevates tacrolimus blood levels, risking kidney toxicity.",
+      "summary": "Ketoconazole multiplies blood levels of Tacrolimus, risking acute kidney failure.",
+      "explanation": "Inhibition of CYP3A4 and P-gp by Ketoconazole prevents the elimination of Tacrolimus."
+    },
+    {
+      "ingredientA": "carbamazepine",
+      "ingredientB": "ethinylestradiol",
+      "severity": "major",
+      "mechanism": "Carbamazepine accelerates estrogen breakdown, reducing oral contraceptive efficacy.",
+      "summary": "Carbamazepine speeds up the breakdown of oral contraceptives, causing contraceptive failure.",
+      "explanation": "Carbamazepine strongly induces liver CYP3A4 enzymes, rapidly degrading estrogen and progestin."
+    },
+    {
+      "ingredientA": "linezolid",
+      "ingredientB": "sertraline",
+      "severity": "major",
+      "mechanism": "Linezolid possesses MAO-inhibiting properties, posing Serotonin Syndrome risk with SSRIs.",
+      "summary": "Linezolid has MAO-inhibitor activity and can trigger Serotonin Syndrome with Sertraline.",
+      "explanation": "Combining linezolid with SSRIs produces dangerous central nervous system serotonin toxicity."
+    },
+    {
+      "ingredientA": "diazepam",
+      "ingredientB": "oxycodone",
+      "severity": "major",
+      "mechanism": "Concomitant benzodiazepine and opioid therapy produces heightened risk of profound sedation and respiratory depression.",
+      "summary": "Taking Benzodiazepines with Opioids can cause severe sedation, respiratory depression, coma, and death.",
+      "explanation": "Both classes depress the central nervous system respiratory drive via distinct receptors, leading to respiratory arrest."
+    },
+    {
+      "ingredientA": "ciprofloxacin",
+      "ingredientB": "methadone",
+      "severity": "major",
+      "mechanism": "Ciprofloxacin may elevate methadone blood concentration and prolong the cardiac QT interval.",
+      "summary": "Ciprofloxacin raises Methadone concentrations and compounds QT prolongation risk.",
+      "explanation": "CYP3A4 inhibition increases methadone levels, while both agents additively prolong the QT interval."
+    },
+    {
+      "ingredientA": "ibuprofen",
+      "ingredientB": "warfarin",
+      "severity": "major",
+      "mechanism": "NSAID-induced gastric irritation combined with systemic anticoagulation creates high bleeding risk.",
+      "summary": "Combining Ibuprofen and Warfarin creates an extreme risk of major gastrointestinal bleeding.",
+      "explanation": "Ibuprofen causes stomach mucosal injury and impairs platelet function while Warfarin blocks clotting factors, multiplying hemorrhage risk."
+    },
+    {
+      "ingredientA": "atorvastatin",
+      "ingredientB": "cyclosporine",
+      "severity": "major",
+      "mechanism": "Cyclosporine elevates statin blood concentration, increasing risk of muscle injury.",
+      "summary": "Cyclosporine markedly increases Atorvastatin blood levels, risking severe muscle breakdown (rhabdomyolysis).",
+      "explanation": "Cyclosporine inhibits OATP1B1 hepatic uptake transporters, greatly elevating statin exposure."
+    },
+    {
+      "ingredientA": "spironolactone",
+      "ingredientB": "trimethoprim",
+      "severity": "major",
+      "mechanism": "Both agents reduce renal potassium excretion, risking dangerous hyperkalemia.",
+      "summary": "Combining Trimethoprim and Spironolactone can cause severe, life-threatening hyperkalemia.",
+      "explanation": "Both medications block renal potassium excretion via different tubular mechanisms."
+    },
+    {
+      "ingredientA": "clarithromycin",
+      "ingredientB": "ergotamine",
+      "severity": "major",
+      "mechanism": "Macrolide antibiotic inhibits ergotamine clearance, creating risk of vasospasm.",
+      "summary": "Clarithromycin inhibits Ergotamine breakdown, risking acute vasospasm and gangrene (ergotism).",
+      "explanation": "CYP3A4 inhibition leads to severe peripheral and cerebral vasoconstriction."
+    },
+    {
+      "ingredientA": "paroxetine",
+      "ingredientB": "st. john's wort",
+      "severity": "major",
+      "mechanism": "Co-administration of herbal and pharmaceutical serotonergic agents elevates Serotonin Syndrome risk.",
+      "summary": "Combining St. John's Wort with Paroxetine can precipitate Serotonin Syndrome.",
+      "explanation": "Additive serotonergic enhancement produces tremors, hyperthermia, and confusion."
+    },
+    {
+      "ingredientA": "diltiazem",
+      "ingredientB": "simvastatin",
+      "severity": "major",
+      "mechanism": "Diltiazem raises simvastatin levels, increasing potential for muscle aches and toxicity.",
+      "summary": "Diltiazem raises Simvastatin levels, increasing the risk of muscle toxicity and myopathy.",
+      "explanation": "Moderate CYP3A4 inhibition by diltiazem increases simvastatin blood concentration."
+    },
+    {
+      "ingredientA": "methotrexate",
+      "ingredientB": "naproxen",
+      "severity": "major",
+      "mechanism": "NSAIDs impede methotrexate clearance, heightening risk of serious toxicity.",
+      "summary": "Naproxen reduces renal clearance of Methotrexate, causing severe methotrexate toxicity.",
+      "explanation": "NSAIDs reduce kidney prostaglandins and tubular secretion, leading to methotrexate accumulation."
+    },
+    {
+      "ingredientA": "phenytoin",
+      "ingredientB": "voriconazole",
+      "severity": "major",
+      "mechanism": "Mutual pharmacokinetic interactions can cause elevated phenytoin toxicity or antifungal failure.",
+      "summary": "Mutual interaction between Phenytoin and Voriconazole causes toxicity and treatment failure.",
+      "explanation": "Voriconazole increases phenytoin levels, while phenytoin strongly reduces voriconazole efficacy."
+    }
+  ]
+}

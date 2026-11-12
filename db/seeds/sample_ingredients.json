@@ -1,0 +1,518 @@
+{
+  "source": "MedGuard sample data (not clinically verified)",
+  "ingredients": [
+    {
+      "name": "paracetamol",
+      "rxcui": "161",
+      "synonyms": ["acetaminophen", "apap"],
+      "classes": ["Analgesic", "Antipyretic"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 64, "maxDailyDoseMg": 4000, "rationale": "Standard adult maximum daily dose", "source": "MedGuard sample data (not clinically verified)" },
+        { "ageMin": 65, "ageMax": 150, "maxDailyDoseMg": 3000, "rationale": "Reduced limit in elderly patients to prevent hepatotoxicity", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "ibuprofen",
+      "rxcui": "5640",
+      "synonyms": ["iso-butyl-propanoic-phenolic acid"],
+      "classes": ["NSAID"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 64, "maxDailyDoseMg": 2400, "rationale": "Standard OTC/Rx adult maximum dose", "source": "MedGuard sample data (not clinically verified)" },
+        { "ageMin": 65, "ageMax": 150, "maxDailyDoseMg": 1200, "rationale": "Reduced limit in elderly patients due to renal/GI risk", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "diclofenac",
+      "rxcui": "3355",
+      "synonyms": [],
+      "classes": ["NSAID"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 150, "rationale": "Standard daily maximum dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "naproxen",
+      "rxcui": "7258",
+      "synonyms": ["aleve"],
+      "classes": ["NSAID"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 1500, "rationale": "Standard daily maximum dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "aspirin",
+      "rxcui": "1191",
+      "synonyms": ["acetylsalicylic acid", "asa"],
+      "classes": ["Antiplatelet", "NSAID"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 325, "rationale": "Standard antiplatelet cardioprotection limit", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "warfarin",
+      "rxcui": "11289",
+      "synonyms": ["coumadin"],
+      "classes": ["Anticoagulant"],
+      "doseLimits": []
+    },
+    {
+      "name": "clopidogrel",
+      "rxcui": "32968",
+      "synonyms": ["plavix"],
+      "classes": ["Antiplatelet"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 75, "rationale": "Maintenance dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "rivaroxaban",
+      "rxcui": "1114195",
+      "synonyms": ["xarelto"],
+      "classes": ["Anticoagulant"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 20, "rationale": "Standard daily limit", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "pantoprazole",
+      "rxcui": "40790",
+      "synonyms": [],
+      "classes": ["Proton Pump Inhibitor"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 80, "rationale": "Max daily dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "omeprazole",
+      "rxcui": "7646",
+      "synonyms": ["prilosec"],
+      "classes": ["Proton Pump Inhibitor"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 40, "rationale": "Max daily dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "domperidone",
+      "rxcui": "3587",
+      "synonyms": ["motilium"],
+      "classes": ["Antiemetic", "Dopamine Antagonist"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 30, "rationale": "Max daily dose due to QT risk", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "amoxicillin",
+      "rxcui": "723",
+      "synonyms": ["amoxil"],
+      "classes": ["Penicillin Antibiotic"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 3000, "rationale": "Max daily oral dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "clavulanic acid",
+      "rxcui": "2582",
+      "synonyms": ["clavulanate potassium"],
+      "classes": ["Beta-Lactamase Inhibitor"],
+      "doseLimits": []
+    },
+    {
+      "name": "telmisartan",
+      "rxcui": "73032",
+      "synonyms": ["micardis"],
+      "classes": ["Angiotensin Receptor Blocker"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 80, "rationale": "Max antihypertensive dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "amlodipine",
+      "rxcui": "17767",
+      "synonyms": ["norvasc"],
+      "classes": ["Calcium Channel Blocker", "Dihydropyridine CCB"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 10, "rationale": "Max antihypertensive dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "metoprolol",
+      "rxcui": "6918",
+      "synonyms": ["lopressor", "toprol-xl"],
+      "classes": ["Beta-Blocker"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 400, "rationale": "Max cardiovascular dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "verapamil",
+      "rxcui": "11170",
+      "synonyms": ["calan", "isoptin"],
+      "classes": ["Calcium Channel Blocker", "Non-Dihydropyridine CCB"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 480, "rationale": "Max daily dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "diltiazem",
+      "rxcui": "3443",
+      "synonyms": ["cardizem"],
+      "classes": ["Calcium Channel Blocker", "Non-Dihydropyridine CCB"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 360, "rationale": "Max daily dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "lisinopril",
+      "rxcui": "29046",
+      "synonyms": ["prinivil", "zestril"],
+      "classes": ["ACE Inhibitor"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 40, "rationale": "Max daily dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "spironolactone",
+      "rxcui": "9997",
+      "synonyms": ["aldactone"],
+      "classes": ["Potassium-Sparing Diuretic", "Aldosterone Antagonist"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 100, "rationale": "Max daily dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "furosemide",
+      "rxcui": "4603",
+      "synonyms": ["lasix"],
+      "classes": ["Loop Diuretic"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 600, "rationale": "Max daily diuretic dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "potassium chloride",
+      "rxcui": "8591",
+      "synonyms": ["kcl", "potassium"],
+      "classes": ["Electrolyte Supplement"],
+      "doseLimits": []
+    },
+    {
+      "name": "atorvastatin",
+      "rxcui": "83367",
+      "synonyms": ["lipitor"],
+      "classes": ["Statin", "HMG-CoA Reductase Inhibitor"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 80, "rationale": "Max lipid lowering dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "simvastatin",
+      "rxcui": "36567",
+      "synonyms": ["zocor"],
+      "classes": ["Statin", "HMG-CoA Reductase Inhibitor"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 40, "rationale": "Max daily dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "metformin",
+      "rxcui": "6809",
+      "synonyms": ["glucophage"],
+      "classes": ["Biguanide", "Antidiabetic"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 2550, "rationale": "Max daily antidiabetic dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "sildenafil",
+      "rxcui": "136411",
+      "synonyms": ["viagra", "revatio"],
+      "classes": ["PDE5 Inhibitor"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 100, "rationale": "Max single/daily dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "nitroglycerin",
+      "rxcui": "4917",
+      "synonyms": ["glyceryl trinitrate", "gtn"],
+      "classes": ["Nitrate Vasodilator"],
+      "doseLimits": []
+    },
+    {
+      "name": "digoxin",
+      "rxcui": "3407",
+      "synonyms": ["lanoxin"],
+      "classes": ["Cardiac Glycoside"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 0.25, "rationale": "Narrow therapeutic index", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "amiodarone",
+      "rxcui": "703",
+      "synonyms": ["cordarone"],
+      "classes": ["Antiarrhythmic", "Class III Antiarrhythmic"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 400, "rationale": "Maintenance dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "sertraline",
+      "rxcui": "36437",
+      "synonyms": ["zoloft"],
+      "classes": ["SSRI", "Antidepressant"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 200, "rationale": "Max antidepressant dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "fluoxetine",
+      "rxcui": "4493",
+      "synonyms": ["prozac"],
+      "classes": ["SSRI", "Antidepressant"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 80, "rationale": "Max antidepressant dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "paroxetine",
+      "rxcui": "32937",
+      "synonyms": ["paxil"],
+      "classes": ["SSRI", "Antidepressant"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 50, "rationale": "Max antidepressant dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "phenelzine",
+      "rxcui": "8123",
+      "synonyms": ["nardil"],
+      "classes": ["MAOI", "Antidepressant"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 90, "rationale": "Max daily dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "linezolid",
+      "rxcui": "190521",
+      "synonyms": ["zyvox"],
+      "classes": ["Oxazolidinone Antibiotic"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 1200, "rationale": "Standard antibiotic dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "tramadol",
+      "rxcui": "10689",
+      "synonyms": ["ultram"],
+      "classes": ["Opioid Analgesic"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 64, "maxDailyDoseMg": 400, "rationale": "Max analgesic dose", "source": "MedGuard sample data (not clinically verified)" },
+        { "ageMin": 65, "ageMax": 150, "maxDailyDoseMg": 300, "rationale": "Reduced limit in elderly patients", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "oxycodone",
+      "rxcui": "7804",
+      "synonyms": ["oxycontin"],
+      "classes": ["Opioid Analgesic"],
+      "doseLimits": []
+    },
+    {
+      "name": "methadone",
+      "rxcui": "6813",
+      "synonyms": ["dolophine"],
+      "classes": ["Opioid Analgesic"],
+      "doseLimits": []
+    },
+    {
+      "name": "diazepam",
+      "rxcui": "3322",
+      "synonyms": ["valium"],
+      "classes": ["Benzodiazepine"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 40, "rationale": "Max daily anxiolytic dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "alprazolam",
+      "rxcui": "596",
+      "synonyms": ["xanax"],
+      "classes": ["Benzodiazepine"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 4, "rationale": "Max daily dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "diphenhydramine",
+      "rxcui": "3498",
+      "synonyms": ["benadryl"],
+      "classes": ["Antihistamine", "Anticholinergic"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 300, "rationale": "Max daily antihistamine dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "methotrexate",
+      "rxcui": "6851",
+      "synonyms": ["rheumatrex"],
+      "classes": ["Antimetabolite", "Immunosuppressant"],
+      "doseLimits": []
+    },
+    {
+      "name": "trimethoprim",
+      "rxcui": "10829",
+      "synonyms": [],
+      "classes": ["Antibiotic", "Folate Antagonist"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 400, "rationale": "Max oral antibiotic dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "lithium",
+      "rxcui": "6448",
+      "synonyms": ["lithium carbonate", "eskalith"],
+      "classes": ["Mood Stabilizer"],
+      "doseLimits": []
+    },
+    {
+      "name": "clarithromycin",
+      "rxcui": "21212",
+      "synonyms": ["biaxin"],
+      "classes": ["Macrolide Antibiotic"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 1000, "rationale": "Max antibiotic daily dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "ciprofloxacin",
+      "rxcui": "2551",
+      "synonyms": ["cipro"],
+      "classes": ["Fluoroquinolone Antibiotic"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 1500, "rationale": "Max antibiotic dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "levofloxacin",
+      "rxcui": "82122",
+      "synonyms": ["levaquin"],
+      "classes": ["Fluoroquinolone Antibiotic"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 750, "rationale": "Max antibiotic dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "theophylline",
+      "rxcui": "10438",
+      "synonyms": ["theo-dur"],
+      "classes": ["Methylxanthine", "Bronchodilator"],
+      "doseLimits": []
+    },
+    {
+      "name": "fluconazole",
+      "rxcui": "4450",
+      "synonyms": ["diflucan"],
+      "classes": ["Azole Antifungal"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 800, "rationale": "Max daily antifungal dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "ketoconazole",
+      "rxcui": "6135",
+      "synonyms": ["nizoral"],
+      "classes": ["Azole Antifungal"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 400, "rationale": "Max daily antifungal dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "voriconazole",
+      "rxcui": "121243",
+      "synonyms": ["vfend"],
+      "classes": ["Azole Antifungal"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 400, "rationale": "Max daily antifungal dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "allopurinol",
+      "rxcui": "519",
+      "synonyms": ["zyloprim"],
+      "classes": ["Xanthine Oxidase Inhibitor"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 800, "rationale": "Max antigout dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "azathioprine",
+      "rxcui": "1256",
+      "synonyms": ["imuran"],
+      "classes": ["Immunosuppressant"],
+      "doseLimits": []
+    },
+    {
+      "name": "colchicine",
+      "rxcui": "2683",
+      "synonyms": ["colcrys"],
+      "classes": ["Antigout Agent"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 1.8, "rationale": "Max daily dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "tacrolimus",
+      "rxcui": "42316",
+      "synonyms": ["prograf"],
+      "classes": ["Immunosuppressant", "Calcineurin Inhibitor"],
+      "doseLimits": []
+    },
+    {
+      "name": "cyclosporine",
+      "rxcui": "3008",
+      "synonyms": ["cyclosporin", "sandimmune", "neoral"],
+      "classes": ["Immunosuppressant", "Calcineurin Inhibitor"],
+      "doseLimits": []
+    },
+    {
+      "name": "carbamazepine",
+      "rxcui": "2002",
+      "synonyms": ["tegretol"],
+      "classes": ["Anticonvulsant", "Mood Stabilizer"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 1200, "rationale": "Standard antiepileptic max dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    },
+    {
+      "name": "ethinylestradiol",
+      "rxcui": "4124",
+      "synonyms": ["ethinyl estradiol"],
+      "classes": ["Estrogen", "Oral Contraceptive"],
+      "doseLimits": []
+    },
+    {
+      "name": "ergotamine",
+      "rxcui": "3992",
+      "synonyms": ["ergomar"],
+      "classes": ["Ergot Alkaloid", "Antimigraine"],
+      "doseLimits": []
+    },
+    {
+      "name": "st. john's wort",
+      "rxcui": "258334",
+      "synonyms": ["hypericum perforatum"],
+      "classes": ["Herbal Supplement"],
+      "doseLimits": []
+    },
+    {
+      "name": "phenytoin",
+      "rxcui": "8183",
+      "synonyms": ["dilantin"],
+      "classes": ["Anticonvulsant", "Hydantoin"],
+      "doseLimits": [
+        { "ageMin": 0, "ageMax": 150, "maxDailyDoseMg": 500, "rationale": "Standard antiepileptic max dose", "source": "MedGuard sample data (not clinically verified)" }
+      ]
+    }
+  ]
+}

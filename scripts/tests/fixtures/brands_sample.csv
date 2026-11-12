@@ -1,0 +1,6 @@
+brand_name,composition,manufacturer,form
+SampleParacetamol,Paracetamol 500mg,Test Pharma,tablet
+SampleAcetaminophen,Acetaminophen (650mg),Test Pharma,tablet
+SampleUnknown,NonExistentChemical 100mg,Test Pharma,tablet
+SampleParacetamol,Paracetamol 500mg,Test Pharma,capsule
+

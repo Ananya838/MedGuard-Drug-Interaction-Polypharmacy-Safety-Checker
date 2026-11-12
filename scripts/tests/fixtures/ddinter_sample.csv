@@ -1,0 +1,6 @@
+Drug_A,Drug_B,Level,Description
+warfarin,aspirin,Major,MedGuard sample data (not clinically verified): Bleeding risk
+acetaminophen,warfarin,Moderate,MedGuard sample data (not clinically verified): INR elevation with paracetamol synonym
+unknown_substance_a,unknown_substance_b,Minor,MedGuard sample data (not clinically verified): Unmatched pair
+warfarin,aspirin,Critical,MedGuard sample data (not clinically verified): Duplicate row testing merged update
+

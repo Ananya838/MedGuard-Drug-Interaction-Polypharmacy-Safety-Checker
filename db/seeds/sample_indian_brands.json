@@ -1,0 +1,323 @@
+{
+  "source": "MedGuard sample data (not clinically verified)",
+  "brands": [
+    {
+      "brandName": "Dolo 650",
+      "manufacturer": "Micro Labs",
+      "form": "tablet",
+      "strengthRaw": "650mg",
+      "ingredients": [{ "name": "paracetamol", "strengthMg": 650 }]
+    },
+    {
+      "brandName": "Crocin 500",
+      "manufacturer": "GSK",
+      "form": "tablet",
+      "strengthRaw": "500mg",
+      "ingredients": [{ "name": "paracetamol", "strengthMg": 500 }]
+    },
+    {
+      "brandName": "Calpol 500",
+      "manufacturer": "GSK",
+      "form": "tablet",
+      "strengthRaw": "500mg",
+      "ingredients": [{ "name": "paracetamol", "strengthMg": 500 }]
+    },
+    {
+      "brandName": "Pan-D",
+      "manufacturer": "Alkem",
+      "form": "capsule",
+      "strengthRaw": "40mg/30mg",
+      "ingredients": [
+        { "name": "pantoprazole", "strengthMg": 40 },
+        { "name": "domperidone", "strengthMg": 30 }
+      ]
+    },
+    {
+      "brandName": "Pan 40",
+      "manufacturer": "Alkem",
+      "form": "tablet",
+      "strengthRaw": "40mg",
+      "ingredients": [{ "name": "pantoprazole", "strengthMg": 40 }]
+    },
+    {
+      "brandName": "Augmentin 625",
+      "manufacturer": "GSK",
+      "form": "tablet",
+      "strengthRaw": "500mg/125mg",
+      "ingredients": [
+        { "name": "amoxicillin", "strengthMg": 500 },
+        { "name": "clavulanic acid", "strengthMg": 125 }
+      ]
+    },
+    {
+      "brandName": "Mox 500",
+      "manufacturer": "Sun Pharma",
+      "form": "capsule",
+      "strengthRaw": "500mg",
+      "ingredients": [{ "name": "amoxicillin", "strengthMg": 500 }]
+    },
+    {
+      "brandName": "Telma 40",
+      "manufacturer": "Glenmark",
+      "form": "tablet",
+      "strengthRaw": "40mg",
+      "ingredients": [{ "name": "telmisartan", "strengthMg": 40 }]
+    },
+    {
+      "brandName": "Telma-AM",
+      "manufacturer": "Glenmark",
+      "form": "tablet",
+      "strengthRaw": "40mg/5mg",
+      "ingredients": [
+        { "name": "telmisartan", "strengthMg": 40 },
+        { "name": "amlodipine", "strengthMg": 5 }
+      ]
+    },
+    {
+      "brandName": "Amlong 5",
+      "manufacturer": "Micro Labs",
+      "form": "tablet",
+      "strengthRaw": "5mg",
+      "ingredients": [{ "name": "amlodipine", "strengthMg": 5 }]
+    },
+    {
+      "brandName": "Brufen 400",
+      "manufacturer": "Abbott",
+      "form": "tablet",
+      "strengthRaw": "400mg",
+      "ingredients": [{ "name": "ibuprofen", "strengthMg": 400 }]
+    },
+    {
+      "brandName": "Voveran 50",
+      "manufacturer": "Novartis",
+      "form": "tablet",
+      "strengthRaw": "50mg",
+      "ingredients": [{ "name": "diclofenac", "strengthMg": 50 }]
+    },
+    {
+      "brandName": "Disprin",
+      "manufacturer": "Reckitt Benckiser",
+      "form": "tablet",
+      "strengthRaw": "325mg",
+      "ingredients": [{ "name": "aspirin", "strengthMg": 325 }]
+    },
+    {
+      "brandName": "Ecosprin 75",
+      "manufacturer": "USV",
+      "form": "capsule",
+      "strengthRaw": "75mg",
+      "ingredients": [{ "name": "aspirin", "strengthMg": 75 }]
+    },
+    {
+      "brandName": "Warf 5",
+      "manufacturer": "Cipla",
+      "form": "tablet",
+      "strengthRaw": "5mg",
+      "ingredients": [{ "name": "warfarin", "strengthMg": 5 }]
+    },
+    {
+      "brandName": "Deplatt 75",
+      "manufacturer": "Torrent",
+      "form": "tablet",
+      "strengthRaw": "75mg",
+      "ingredients": [{ "name": "clopidogrel", "strengthMg": 75 }]
+    },
+    {
+      "brandName": "Xarelto 20",
+      "manufacturer": "Bayer",
+      "form": "tablet",
+      "strengthRaw": "20mg",
+      "ingredients": [{ "name": "rivaroxaban", "strengthMg": 20 }]
+    },
+    {
+      "brandName": "Betaloc 50",
+      "manufacturer": "AstraZeneca",
+      "form": "tablet",
+      "strengthRaw": "50mg",
+      "ingredients": [{ "name": "metoprolol", "strengthMg": 50 }]
+    },
+    {
+      "brandName": "Calaptin 40",
+      "manufacturer": "Abbott",
+      "form": "tablet",
+      "strengthRaw": "40mg",
+      "ingredients": [{ "name": "verapamil", "strengthMg": 40 }]
+    },
+    {
+      "brandName": "Dilzem 30",
+      "manufacturer": "Torrent",
+      "form": "tablet",
+      "strengthRaw": "30mg",
+      "ingredients": [{ "name": "diltiazem", "strengthMg": 30 }]
+    },
+    {
+      "brandName": "Lipaglyn 4",
+      "manufacturer": "Zydus",
+      "form": "tablet",
+      "strengthRaw": "4mg",
+      "ingredients": [{ "name": "atorvastatin", "strengthMg": 10 }]
+    },
+    {
+      "brandName": "Atorva 20",
+      "manufacturer": "Zydus",
+      "form": "tablet",
+      "strengthRaw": "20mg",
+      "ingredients": [{ "name": "atorvastatin", "strengthMg": 20 }]
+    },
+    {
+      "brandName": "Simvotin 20",
+      "manufacturer": "Sun Pharma",
+      "form": "tablet",
+      "strengthRaw": "20mg",
+      "ingredients": [{ "name": "simvastatin", "strengthMg": 20 }]
+    },
+    {
+      "brandName": "Glycomet 500",
+      "manufacturer": "USV",
+      "form": "tablet",
+      "strengthRaw": "500mg",
+      "ingredients": [{ "name": "metformin", "strengthMg": 500 }]
+    },
+    {
+      "brandName": "Lasix 40",
+      "manufacturer": "Sanofi",
+      "form": "tablet",
+      "strengthRaw": "40mg",
+      "ingredients": [{ "name": "furosemide", "strengthMg": 40 }]
+    },
+    {
+      "brandName": "Aldactone 25",
+      "manufacturer": "RPG Life",
+      "form": "tablet",
+      "strengthRaw": "25mg",
+      "ingredients": [{ "name": "spironolactone", "strengthMg": 25 }]
+    },
+    {
+      "brandName": "Potklor",
+      "manufacturer": "Walter Bushnell",
+      "form": "syrup",
+      "strengthRaw": "1000mg/15ml",
+      "ingredients": [{ "name": "potassium chloride", "strengthMg": 1000 }]
+    },
+    {
+      "brandName": "Lanoxin 0.25",
+      "manufacturer": "GSK",
+      "form": "tablet",
+      "strengthRaw": "0.25mg",
+      "ingredients": [{ "name": "digoxin", "strengthMg": 0.25 }]
+    },
+    {
+      "brandName": "Cordarone 200",
+      "manufacturer": "Sanofi",
+      "form": "tablet",
+      "strengthRaw": "200mg",
+      "ingredients": [{ "name": "amiodarone", "strengthMg": 200 }]
+    },
+    {
+      "brandName": "Suhagra 50",
+      "manufacturer": "Cipla",
+      "form": "tablet",
+      "strengthRaw": "50mg",
+      "ingredients": [{ "name": "sildenafil", "strengthMg": 50 }]
+    },
+    {
+      "brandName": "Nitrolingual",
+      "manufacturer": "Sanofi",
+      "form": "spray",
+      "strengthRaw": "0.4mg",
+      "ingredients": [{ "name": "nitroglycerin", "strengthMg": 0.4 }]
+    },
+    {
+      "brandName": "Sertima 50",
+      "manufacturer": "Intas",
+      "form": "tablet",
+      "strengthRaw": "50mg",
+      "ingredients": [{ "name": "sertraline", "strengthMg": 50 }]
+    },
+    {
+      "brandName": "Fludac 20",
+      "manufacturer": "Cadila",
+      "form": "capsule",
+      "strengthRaw": "20mg",
+      "ingredients": [{ "name": "fluoxetine", "strengthMg": 20 }]
+    },
+    {
+      "brandName": "Tramazac 50",
+      "manufacturer": "Zydus",
+      "form": "capsule",
+      "strengthRaw": "50mg",
+      "ingredients": [{ "name": "tramadol", "strengthMg": 50 }]
+    },
+    {
+      "brandName": "Valium 5",
+      "manufacturer": "Abbott",
+      "form": "tablet",
+      "strengthRaw": "5mg",
+      "ingredients": [{ "name": "diazepam", "strengthMg": 5 }]
+    },
+    {
+      "brandName": "Alprax 0.5",
+      "manufacturer": "Torrent",
+      "form": "tablet",
+      "strengthRaw": "0.5mg",
+      "ingredients": [{ "name": "alprazolam", "strengthMg": 0.5 }]
+    },
+    {
+      "brandName": "Benadryl",
+      "manufacturer": "Johnson & Johnson",
+      "form": "syrup",
+      "strengthRaw": "25mg/10ml",
+      "ingredients": [{ "name": "diphenhydramine", "strengthMg": 25 }]
+    },
+    {
+      "brandName": "Folitrax 10",
+      "manufacturer": "Ipca",
+      "form": "tablet",
+      "strengthRaw": "10mg",
+      "ingredients": [{ "name": "methotrexate", "strengthMg": 10 }]
+    },
+    {
+      "brandName": "Bactrim DS",
+      "manufacturer": "Abbott",
+      "form": "tablet",
+      "strengthRaw": "160mg/800mg",
+      "ingredients": [{ "name": "trimethoprim", "strengthMg": 160 }]
+    },
+    {
+      "brandName": "Licab 300",
+      "manufacturer": "Torrent",
+      "form": "tablet",
+      "strengthRaw": "300mg",
+      "ingredients": [{ "name": "lithium", "strengthMg": 300 }]
+    },
+    {
+      "brandName": "Clariwin 500",
+      "manufacturer": "Sun Pharma",
+      "form": "tablet",
+      "strengthRaw": "500mg",
+      "ingredients": [{ "name": "clarithromycin", "strengthMg": 500 }]
+    },
+    {
+      "brandName": "Cifran 500",
+      "manufacturer": "Sun Pharma",
+      "form": "tablet",
+      "strengthRaw": "500mg",
+      "ingredients": [{ "name": "ciprofloxacin", "strengthMg": 500 }]
+    },
+    {
+      "brandName": "Zyloric 100",
+      "manufacturer": "GSK",
+      "form": "tablet",
+      "strengthRaw": "100mg",
+      "ingredients": [{ "name": "allopurinol", "strengthMg": 100 }]
+    },
+    {
+      "brandName": "Colchimax 0.5",
+      "manufacturer": "Wallace",
+      "form": "tablet",
+      "strengthRaw": "0.5mg",
+      "ingredients": [{ "name": "colchicine", "strengthMg": 0.5 }]
+    }
+  ]
+}
+

@@ -1,0 +1,117 @@
+[
+  {
+    "file": "synthetic_strip_01_dolo650_clean.bmp",
+    "expectedName": "Dolo 650",
+    "category": "synthetic_clean"
+  },
+  {
+    "file": "synthetic_strip_02_telma40_clean.bmp",
+    "expectedName": "Telma 40",
+    "category": "synthetic_clean"
+  },
+  {
+    "file": "synthetic_strip_03_warf5_clean.bmp",
+    "expectedName": "Warf 5",
+    "category": "synthetic_clean"
+  },
+  {
+    "file": "synthetic_strip_04_ecosprin75_clean.bmp",
+    "expectedName": "Ecosprin 75",
+    "category": "synthetic_clean"
+  },
+  {
+    "file": "synthetic_strip_05_glycomet500_clean.bmp",
+    "expectedName": "Glycomet 500",
+    "category": "synthetic_clean"
+  },
+  {
+    "file": "synthetic_strip_06_combiflam_clean.bmp",
+    "expectedName": "Combiflam",
+    "category": "synthetic_clean"
+  },
+  {
+    "file": "synthetic_strip_07_pantocid40_clean.bmp",
+    "expectedName": "Pantocid 40",
+    "category": "synthetic_clean"
+  },
+  {
+    "file": "synthetic_strip_08_atorva20_clean.bmp",
+    "expectedName": "Atorva 20",
+    "category": "synthetic_clean"
+  },
+  {
+    "file": "synthetic_strip_09_thyronorm50_clean.bmp",
+    "expectedName": "Thyronorm 50",
+    "category": "synthetic_clean"
+  },
+  {
+    "file": "synthetic_strip_10_shelcal500_clean.bmp",
+    "expectedName": "Shelcal 500",
+    "category": "synthetic_clean"
+  },
+  {
+    "file": "synthetic_strip_11_augmentin625_clean.bmp",
+    "expectedName": "Augmentin 625 Duo",
+    "category": "synthetic_clean"
+  },
+  {
+    "file": "synthetic_strip_12_dolo650_glare.bmp",
+    "expectedName": "Dolo 650",
+    "category": "synthetic_glare"
+  },
+  {
+    "file": "synthetic_strip_13_pantocid40_glare.bmp",
+    "expectedName": "Pantocid 40",
+    "category": "synthetic_glare"
+  },
+  {
+    "file": "synthetic_strip_14_shelcal500_glare.bmp",
+    "expectedName": "Shelcal 500",
+    "category": "synthetic_glare"
+  },
+  {
+    "file": "synthetic_strip_15_telma40_lowcontrast.bmp",
+    "expectedName": "Telma 40",
+    "category": "synthetic_low_contrast"
+  },
+  {
+    "file": "synthetic_strip_16_thyronorm50_lowcontrast.bmp",
+    "expectedName": "Thyronorm 50",
+    "category": "synthetic_low_contrast"
+  },
+  {
+    "file": "synthetic_strip_17_ecosprin75_lowcontrast.bmp",
+    "expectedName": "Ecosprin 75",
+    "category": "synthetic_low_contrast"
+  },
+  {
+    "file": "synthetic_strip_18_warf5_skewed.bmp",
+    "expectedName": "Warf 5",
+    "category": "synthetic_skewed"
+  },
+  {
+    "file": "synthetic_strip_19_atorva20_skewed.bmp",
+    "expectedName": "Atorva 20",
+    "category": "synthetic_skewed"
+  },
+  {
+    "file": "synthetic_strip_20_glycomet500_skewed.bmp",
+    "expectedName": "Glycomet 500",
+    "category": "synthetic_skewed"
+  },
+  {
+    "file": "synthetic_strip_21_combiflam_smallfont.bmp",
+    "expectedName": "Combiflam",
+    "category": "synthetic_small_font"
+  },
+  {
+    "file": "synthetic_strip_22_glycomet500_noise.bmp",
+    "expectedName": "Glycomet 500",
+    "category": "synthetic_noise"
+  },
+  {
+    "file": "synthetic_strip_23_unknown_zyzomycin.bmp",
+    "expectedName": null,
+    "category": "synthetic_unrecognized"
+  }
+]
